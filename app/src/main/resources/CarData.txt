@@ -1,0 +1,4 @@
+{"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":5,"fuelType":"Petrol","transmission":"Auto","available":true,"rentalRate":50.0,"rentalLocation":"Auckland"}
+{"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":5,"fuelType":"Petrol","transmission":"Auto","available":true,"rentalRate":50.0,"rentalLocation":"Auckland"}
+{"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":5,"fuelType":"Petrol","transmission":"Auto","available":true,"rentalRate":50.0,"rentalLocation":"Auckland"}
+{"brand":"Honda","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":5,"fuelType":"Petrol","transmission":"Auto","available":true,"rentalRate":50.0,"rentalLocation":"Auckland"}

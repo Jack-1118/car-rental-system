@@ -3,14 +3,27 @@ package carrentalsystem.dao;
 import carrentalsystem.model.Car;
 
 public class Main {
-    public void testSaveCar() {
-        Car car = new Car("Toyota", "Vios",     2018, "ABC1234", "Red", 5, "Petrol", "Auto", true, 100.0, "KL");
-        CarDAO carDAO = new CarDAO();
-        carDAO.saveCar(car);
-    }
 
     public static void main(String[] args) {
-        Main main = new Main();
-        main.testSaveCar();
+        Car car1 = new Car();
+        car1.setBrand("Honda");
+        car1.setModel("Corolla");
+        car1.setYear(2015);
+        car1.setPlateNumber("ABC123");
+        car1.setColour("Red");
+        car1.setSeatCapacity(5);
+        car1.setFuelType("Petrol");
+        car1.setTransmission("Auto");
+        car1.setAvailable(true);
+        car1.setRentalRate(50.0);
+        car1.setRentalLocation("Auckland");
+
+
+        CarDAO carDAO = new CarDAO();
+        Car car2 = carDAO.loadCars().get(3);
+        System.out.println(car2.getBrand());
+
+
+
     }
 }

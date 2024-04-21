@@ -8,8 +8,71 @@ public class User {
 
     // personal information
     private String fullName;
-    private String email;
     private String contactNumber;
     private String address;
     private String dateOfBirth; 
+
+    // constructor
+    public User() {
+    }
+
+    // getters
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    // setters
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+
 }

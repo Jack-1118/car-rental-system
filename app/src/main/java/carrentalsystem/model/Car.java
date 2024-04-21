@@ -1,5 +1,7 @@
 package carrentalsystem.model;
 
+
+
 public class Car {
     
     // car information
@@ -14,25 +16,15 @@ public class Car {
 
 
     // rental information
-    private boolean isAvailable;
+    private boolean available;
     private double rentalRate;
     private String rentalLocation;
 
 
     // constructor
-    public Car(String brand, String model, int year, String plateNumber, String colour, int seatCapacity, String fuelType, String transmission, boolean isAvailable, double rentalRate, String rentalLocation) {
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.plateNumber = plateNumber;
-        this.colour = colour;
-        this.seatCapacity = seatCapacity;
-        this.fuelType = fuelType;
-        this.transmission = transmission;
-        this.isAvailable = isAvailable;
-        this.rentalRate = rentalRate;
-        this.rentalLocation = rentalLocation;
+    public Car() {
     }
+
 
     //getters
     public String getBrand() {
@@ -67,8 +59,8 @@ public class Car {
         return transmission;
     }
     
-    public boolean isAvailable() {
-        return isAvailable;
+    public boolean getAvailable() {
+        return available;
     }
     
     public double getRentalRate() {
@@ -77,6 +69,51 @@ public class Car {
     
     public String getRentalLocation() {
         return rentalLocation;
+    }
+
+    //setters
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
+    }
+
+    public void setSeatCapacity(int seatCapacity) {
+        this.seatCapacity = seatCapacity;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public void setRentalRate(double rentalRate) {
+        this.rentalRate = rentalRate;
+    }
+
+    public void setRentalLocation(String rentalLocation) {
+        this.rentalLocation = rentalLocation;
     }
 
 }
