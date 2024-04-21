@@ -1,0 +1,2 @@
+{"brand":"Toyota","model":"Vios","year":2018,"plateNumber":"ABC1234","colour":"Red","seatCapacity":5,"fuelType":"Petrol","transmission":"Auto","rentalRate":100.0,"rentalLocation":"KL","available":true}
+{"brand":"Toyota","model":"Vios","year":2018,"plateNumber":"ABC1234","colour":"Red","seatCapacity":5,"fuelType":"Petrol","transmission":"Auto","rentalRate":100.0,"rentalLocation":"KL","available":true}
