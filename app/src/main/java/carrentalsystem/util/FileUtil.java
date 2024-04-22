@@ -54,6 +54,12 @@ public class FileUtil {
         return objects;
     }
 
+
+    //delete a record from the file
+    public static void deleteRecord(String filePath, String record, String field) {
+        
+
+
         
 
 

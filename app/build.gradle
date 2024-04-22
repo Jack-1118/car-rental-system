@@ -37,10 +37,11 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'car.management.system.App'
+    mainClass = 'carrentalsystem.ui.common.LoginUI'
 }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
