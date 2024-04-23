@@ -1,10 +1,5 @@
 package carrentalsystem.model;
 
-import java.util.List;
-
-
-import carrentalsystem.dao.CarDAO;
-
 
 public class Car {
 
