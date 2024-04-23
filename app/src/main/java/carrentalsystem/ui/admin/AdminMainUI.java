@@ -43,27 +43,24 @@ public class AdminMainUI extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        // Perform actions based on button clicks
-        if (e.getSource() == carButton) {
-            // Open Car Management UI
-            // Implement your logic here
-            System.out.println("Car Management selected");
-        } else if (e.getSource() == bookingButton) {
-            // Open Booking Management UI
-            // Implement your logic here
-            System.out.println("Booking Management selected");
-        } else if (e.getSource() == customerButton) {
-            // Open Customer Management UI
-            // Implement your logic here
-            System.out.println("Customer Management selected");
-        } else if (e.getSource() == reportButton) {
-            // Generate Reports
-            // Implement your logic here
-            System.out.println("Generate Reports selected");
-        } else if (e.getSource() == adminButton) {
-            // Admin Management UI
-            // Implement your logic here
-            System.out.println("Admin Management selected");
+        // Perform actions based on button clicks 
+        switch (e.getActionCommand()) {
+            case "Car Management":
+                new AdminCarMainUI().setVisible(true);
+                dispose();
+                break;
+            case "Booking Management":
+                JOptionPane.showMessageDialog(this, "Open Booking Management Window");
+                break;
+            case "Customer Management":
+                JOptionPane.showMessageDialog(this, "Open Customer Management Window");
+                break;
+            case "Generate Reports":
+                JOptionPane.showMessageDialog(this, "Open Generate Reports Window");
+                break;
+            case "Admin Management":
+                JOptionPane.showMessageDialog(this, "Open Admin Management Window");
+                break;
         }
     }
 

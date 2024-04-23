@@ -2,11 +2,25 @@ package carrentalsystem.dao;
 
 
 import carrentalsystem.model.User;
-import carrentalsystem.service.UserService;
+import carrentalsystem.model.Car;
+
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(UserService.login("admin1", "passwrd1")); // admin
+        Car cars = new Car();
+        cars.setBrand("Toyota");
+        cars.setModel("Corolla");
+        cars.setYear(2015);
+        cars.setPlateNumber("ABC123");
+        cars.setColour("Red");
+        cars.setSeatCapacity(4);
+        cars.setFuelType("Petrol");
+        cars.setTransmission("Automatic");
+        cars.setAvailable(true);
+        cars.setRentalRate(100.0);
+        cars.setRentalLocation("Sydney");
+        CarDAO.saveCar(cars);
+        
     }
 }

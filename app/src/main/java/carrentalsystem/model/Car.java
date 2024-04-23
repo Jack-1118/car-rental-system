@@ -1,10 +1,15 @@
 package carrentalsystem.model;
 
+import java.util.List;
+
+
+import carrentalsystem.dao.CarDAO;
 
 
 public class Car {
-    
+
     // car information
+    private int carID;
     private String brand;
     private String model;
     private int year;
@@ -23,10 +28,15 @@ public class Car {
 
     // constructor
     public Car() {
+        
     }
 
 
     //getters
+    public int getCarID() {
+        return carID;
+    }
+
     public String getBrand() {
         return brand;
     }
@@ -70,6 +80,8 @@ public class Car {
     public String getRentalLocation() {
         return rentalLocation;
     }
+
+
 
     //setters
     public void setBrand(String brand) {

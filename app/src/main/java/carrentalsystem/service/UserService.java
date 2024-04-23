@@ -10,8 +10,7 @@ public class UserService {
 
     //Login
     public static String login(String username, String password) {
-        UserDAO userDAO = new UserDAO();
-        List<User> users = userDAO.loadUsers();
+        List<User> users = UserDAO.loadUsers();
 
         // loop through the list of users to find the user with the matching username and password
         for (User user : users) {

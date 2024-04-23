@@ -8,17 +8,28 @@ import carrentalsystem.model.Car;
 
 public class CarService {
     
-    //receive the car object and save it to the data file
+    //Add new car
     public static void addNewCar(Car car) {
-        new CarDAO().saveCar(car);
+        CarDAO.saveCar(car);
     }
 
 
-    //return the list of cars
+    //View all cars
     public static List<Car> viewCars() {
-        return new CarDAO().loadCars();
+        return CarDAO.loadCars();
     }
 
+    // Search car by respective field
+    public static List<Car> searchCar(String field, String value) {
+        List<Car> cars = CarDAO.loadCars();
+
+        // Search by field, loop through the list, check if the field matches the value
+        List<Car> searchResults = null;
+        
+
+
+        return searchResults;
+    }
     
 
 
