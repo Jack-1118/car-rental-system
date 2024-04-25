@@ -1,2 +1,5 @@
-{"carID":0,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
-{"carID":0,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":2,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":3,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":4,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":5,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":6,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import carrentalsystem.model.Car;
+
 
 
 public class FileUtil {
@@ -73,9 +75,12 @@ public class FileUtil {
         saveFile(filePath, allData);
     }
 
+    // Get the maximum Car ID
+    public static int getMaxCarId(String filePath) {
+        List<Car> cars = loadFile(filePath, Car.class);
+        return cars.stream().mapToInt(Car::getCarID).max().orElse(0);
+    }
 
-
-        
 
 
 }

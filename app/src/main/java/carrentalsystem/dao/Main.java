@@ -1,7 +1,6 @@
 package carrentalsystem.dao;
 
 
-import carrentalsystem.model.User;
 import carrentalsystem.model.Car;
 
 
