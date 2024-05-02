@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import carrentalsystem.model.Car;
+
 
 
 public class FileUtil {
@@ -75,7 +77,32 @@ public class FileUtil {
 
 
 
-        
+
+
+
+
+
+    
+    // Modify a record in the file
+    public static <T> void modifyRecord(String filePath, Class<T> type, Predicate<T> predicate, T newObject) {
+        List<T> allData = loadFile(filePath, type);
+        for (int i = 0; i < allData.size(); i++) {
+            if (predicate.test(allData.get(i))) {
+                allData.set(i, newObject);
+                break;
+            }
+        }
+    
+        // Clear the file
+        try {
+            new PrintWriter(filePath).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        // Save the modified list back to the file
+        saveFile(filePath, allData);
+    }
 
 
 }

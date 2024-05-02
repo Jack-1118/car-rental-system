@@ -4,68 +4,67 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
 public class AdminMainUI extends JFrame implements ActionListener {
+    // Sidebar buttons
     private JButton carButton, bookingButton, customerButton, reportButton, adminButton;
 
     public AdminMainUI() {
         // Set frame properties
         setTitle("Admin Dashboard");
-        setSize(400, 300);
+        setSize(1300, 800); // Increased size for a more spacious layout
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame on screen
 
-        // Create buttons
-        carButton = new JButton("Car Management");
-        bookingButton = new JButton("Booking Management");
-        customerButton = new JButton("Customer Management");
-        reportButton = new JButton("Generate Reports");
-        adminButton = new JButton("Admin Management");
+        // Create the sidebar
+        JPanel sidebar = new JPanel();
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setBackground(Color.DARK_GRAY); // Set the background color of the sidebar
 
-        // Add action listeners to buttons
-        carButton.addActionListener(this);
-        bookingButton.addActionListener(this);
-        customerButton.addActionListener(this);
-        reportButton.addActionListener(this);
-        adminButton.addActionListener(this);
+        // Initialize buttons and add them to the sidebar
+        carButton = createSidebarButton("Car Management");
+        bookingButton = createSidebarButton("Booking Management");
+        customerButton = createSidebarButton("Customer Management");
+        reportButton = createSidebarButton("Generate Reports");
+        adminButton = createSidebarButton("Admin Management");
 
-        // Set layout
-        setLayout(new GridLayout(5, 1));
+        // Add buttons to the sidebar
+        sidebar.add(carButton);
+        sidebar.add(bookingButton);
+        sidebar.add(customerButton);
+        sidebar.add(reportButton);
+        sidebar.add(adminButton);
 
-        // Add buttons to the frame
-        add(carButton);
-        add(bookingButton);
-        add(customerButton);
-        add(reportButton);
-        add(adminButton);
+        // Main content panel, display Car Management by default
+        JPanel mainContent = new AdminCarMainUI(); // Assume AdminCarMainUI is a JPanel
+        mainContent.setBackground(Color.WHITE);
+
+        // Set layout and add components
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(sidebar, BorderLayout.WEST);
+        getContentPane().add(mainContent, BorderLayout.CENTER);
 
         // Display the frame
         setVisible(true);
     }
 
+    // Helper method to create and style sidebar buttons
+    private JButton createSidebarButton(String text) {
+        JButton button = new JButton(text);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button text
+        button.setBackground(Color.LIGHT_GRAY); // Set the button background
+        button.setForeground(Color.WHITE); // Set the text color
+        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height)); // Make buttons expand to full width
+        button.addActionListener(this);
+        return button;
+    }
+
     public void actionPerformed(ActionEvent e) {
-        // Perform actions based on button clicks 
-        switch (e.getActionCommand()) {
-            case "Car Management":
-                new AdminCarMainUI().setVisible(true);
-                dispose();
-                break;
-            case "Booking Management":
-                JOptionPane.showMessageDialog(this, "Open Booking Management Window");
-                break;
-            case "Customer Management":
-                JOptionPane.showMessageDialog(this, "Open Customer Management Window");
-                break;
-            case "Generate Reports":
-                JOptionPane.showMessageDialog(this, "Open Generate Reports Window");
-                break;
-            case "Admin Management":
-                JOptionPane.showMessageDialog(this, "Open Admin Management Window");
-                break;
-        }
+        // Handle button clicks, similar to your original implementation
+        // ...
     }
 
     public static void main(String[] args) {
         new AdminMainUI();
     }
 }
-

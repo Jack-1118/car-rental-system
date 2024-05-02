@@ -1,2 +1,9 @@
-{"carID":0,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
-{"carID":0,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":true,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":2,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":false,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":3,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":false,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":4,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":false,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":5,"brand":"Toyota","model":"Corolla","year":2015,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":false,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":1,"brand":"Honda","model":"Corolla","year":2010,"plateNumber":"ABC123","colour":"Red","seatCapacity":4,"fuelType":"Petrol","transmission":"Automatic","available":false,"rentalRate":100.0,"rentalLocation":"Sydney"}
+{"carID":7,"brand":"as","model":"as","year":1212,"plateNumber":"asd","colour":"asd","seatCapacity":1,"fuelType":"asd","transmission":"asd","available":false,"rentalRate":1.0,"rentalLocation":"asd"}
+{"carID":8,"brand":"asas","model":"as","year":1111,"plateNumber":"111","colour":"1","seatCapacity":1,"fuelType":"11","transmission":"1","available":false,"rentalRate":1.0,"rentalLocation":"1"}
+{"carID":9,"brand":"11","model":"1","year":1,"plateNumber":"1","colour":"1","seatCapacity":1,"fuelType":"1","transmission":"1","available":false,"rentalRate":1.0,"rentalLocation":"1"}
+{"carID":10,"brand":"12","model":"12","year":12,"plateNumber":"12","colour":"12","seatCapacity":121,"fuelType":"12","transmission":"12","available":false,"rentalRate":12.0,"rentalLocation":"12"}
