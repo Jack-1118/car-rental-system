@@ -1,14 +1,7 @@
 package carrentalsystem.model;
 
-import carrentalsystem.util.FileUtil;
 
 public class Car {
-
-    private static int lastAssignedId;
-
-    static {
-        lastAssignedId = FileUtil.getMaxCarId("app/src/main/resources/CarData.txt"); // Initialize from file
-    }
 
     // car information
     private int carID;
@@ -30,7 +23,7 @@ public class Car {
 
     // constructor
     public Car() {
-        this.carID = ++lastAssignedId;
+        
     }
 
 
@@ -86,6 +79,10 @@ public class Car {
 
 
     //setters
+    public void setCarID(int carID) {
+        this.carID = carID;
+    }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
