@@ -79,6 +79,10 @@ public class Car {
 
 
     //setters
+    public void setCarID(int carID) {
+        this.carID = carID;
+    }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }

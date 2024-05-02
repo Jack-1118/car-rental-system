@@ -1,7 +1,10 @@
 package carrentalsystem.dao;
 
 import java.util.List;
+
+
 import java.util.Collections;
+import java.util.Comparator;
 
 
 import carrentalsystem.model.Car;
@@ -20,9 +23,38 @@ public class CarDAO {
 
     // Load the list of cars from the data file
     public static List<Car> loadCars() {
-        return FileUtil.loadFile(DATA_FILE_PATH, Car.class);
+        List<Car> cars = FileUtil.loadFile(DATA_FILE_PATH, Car.class);
+        Collections.sort(cars, Comparator.comparing(Car::getCarID));
+        return cars;
     }
     
+    public static Car getCarById(int id) {
+        List<Car> cars = FileUtil.loadFile(DATA_FILE_PATH, Car.class);
+    
+        for (Car car : cars) {
+            if (car.getCarID() == id) {
+                return car;  // returns the car without altering ID sequence
+            }
+        }
+        return null;
+    }
+
+
+    // Get the maximum Car ID
+    public static int assignCarID() {
+        List<Car> cars = FileUtil.loadFile(DATA_FILE_PATH, Car.class);
+        return cars.stream().mapToInt(Car::getCarID).max().orElse(0) + 1;
+    }
     
 
+
+    // modify the car in the data file
+    public static void modifyCar(Car car) {
+        FileUtil.modifyRecord(DATA_FILE_PATH, Car.class, c -> c.getCarID() == car.getCarID(), car);
+    }
+
+    // delete the car in the data file
+    public static void deleteCar(Car car) {
+        FileUtil.deleteRecord(DATA_FILE_PATH, Car.class, c -> c.getCarID() == car.getCarID());
+    }
 }
