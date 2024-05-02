@@ -9,17 +9,20 @@ public class User {
     // personal information
     private String fullName;
     private String contactNumber;
-    private String address;
-    private String dateOfBirth; 
+    private String gender;
+    private String dateOfBirth;
 
     // constructor
     public User() {
+        
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+//    public User(String username, String password, String role) {
+//        this.username = username;
+//        this.password = password;
+//        this.role = role;
+//  
+//    }
 
     // getters
     public String getUsername() {
@@ -42,13 +45,15 @@ public class User {
         return contactNumber;
     }
 
-    public String getAddress() {
-        return address;
+    public string getGender{
+        return gender;
     }
 
     public String getDateOfBirth() {
         return dateOfBirth;
     }
+
+    
 
     // setters
     public void setUsername(String username) {
@@ -71,8 +76,8 @@ public class User {
         this.contactNumber = contactNumber;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setGender(String gender){
+        this.gender = gender;
     }
 
     public void setDateOfBirth(String dateOfBirth) {

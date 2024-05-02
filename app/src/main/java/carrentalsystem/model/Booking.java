@@ -8,6 +8,9 @@ public class Booking {
     private String username;
     private String startDate;
     private String endDate;
+    private String status;
+    private double amount;
+    private String paymentStatus;
 
     // constructor
     public Booking() {
@@ -34,6 +37,18 @@ public class Booking {
         return endDate;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
 
 
     //Setter
@@ -55,6 +70,18 @@ public class Booking {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
     
 }
