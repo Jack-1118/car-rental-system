@@ -45,7 +45,7 @@ public class User {
         return contactNumber;
     }
 
-    public string getGender{
+    public String getGender(){
         return gender;
     }
 
