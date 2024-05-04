@@ -4,64 +4,51 @@ import java.util.List;
 
 import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.User;
-import java.io.IOException;
+
 
 public class UserService {
 
-    private UserService() {
-        // Private constructor to prevent instantiation
+
+    public static String registerUser(String username, String password) throws IllegalArgumentException {
+        validateUsername(username);
+        validatePassword(password);
+//        String role = "user";
+
+        if (isUsernameTaken(username)) {
+            throw new IllegalArgumentException("Username already taken");
+        }
+
+//        User newUser = new User(username, password, role);
+//        UserDAO.saveUser(newUser);
+        return "Success";
     }
 
-    //Register
-    public static String register(String username, String password){
-        boolean usernameChecker = false ;
-        boolean passwordChecker = false ;
-
-        
+    private static void validateUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
-            return "Username cannot be empty";
+            throw new IllegalArgumentException("Username cannot be empty");
         }
-        
-        List<User> users = UserDAO.loadUsers();
+    }
 
-        for (User user: users){
-            if(user.getUsername().equals(username)){
-                return "Username already been taken";
+    private static void validatePassword(String password) {
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+        if (password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+        // Additional password complexity checks can be added here
+    }
+
+    private static boolean isUsernameTaken(String username) {
+        List<User> users = UserDAO.loadUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true;
             }
         }
-        usernameChecker = true;
-        
-        if(password == null || password.trim().isEmpty()){
-            return "Password cannot be empty";
-        } else if (password.length() < 8){
-            return "Password must be at least 8 character";
-        }
-        passwordChecker = true;
-        
-        // If both username and password are valid, register the user
-        if (usernameChecker && passwordChecker) {
-            
-                // Create a new User object with provided username and password
-                
-                User user = new User(username, password);
-                
-                // Save the user
-                UserDAO.saveUser(user);
-                
-                return "Success";
-            } 
-        return "Error occurred while registering";
-            
-        
-
-      
+        return false;
     }
-        
-
-
     
-    
-
     //Login
     public static String login(String username, String password) {
         List<User> users = UserDAO.loadUsers();
