@@ -26,6 +26,8 @@ dependencies {
 
     // Jackson JSON processor
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
+
+    implementation 'com.toedter:jcalendar:1.4'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
