@@ -4,11 +4,10 @@ public class User {
     // account information
     private String username;
     private String password;
-    private String role;
 
     // personal information
     private String fullName;
-    private String contactNumber;
+    // private String contactNumber;
     private String gender;
     private String dateOfBirth;
 
@@ -17,12 +16,13 @@ public class User {
         
     }
 
-//    public User(String username, String password, String role) {
-//        this.username = username;
-//        this.password = password;
-//        this.role = role;
-//  
-//    }
+   public User(String username, String password, String FullName, String gender, String dateOfBirth) {
+       this.username = username;
+       this.password = password;
+       this.fullName = FullName;
+       this.gender = gender;
+       this.dateOfBirth = dateOfBirth;       
+   }
 
     // getters
     public String getUsername() {
@@ -33,17 +33,15 @@ public class User {
         return password;
     }
 
-    public String getRole() {
-        return role;
-    }
+
 
     public String getFullName() {
         return fullName;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
-    }
+    // public String getContactNumber() {
+    //     return contactNumber;
+    // }
 
     public String getGender(){
         return gender;
@@ -64,17 +62,14 @@ public class User {
         this.password = password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
+    // public void setContactNumber(String contactNumber) {
+    //     this.contactNumber = contactNumber;
+    // }
 
     public void setGender(String gender){
         this.gender = gender;
