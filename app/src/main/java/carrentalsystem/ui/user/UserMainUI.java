@@ -4,6 +4,8 @@
  */
 package carrentalsystem.ui.user;
 
+import carrentalsystem.dao.UserDAO;
+
 /**
  *
  * @author theke
@@ -44,6 +46,11 @@ public class UserMainUI extends javax.swing.JFrame {
         });
 
         LogoutButton1.setText("LOGOUT");
+        LogoutButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LogoutButton1MouseClicked(evt);
+            }
+        });
 
         PaymentButton.setText("PAYMENT");
 
@@ -94,6 +101,14 @@ public class UserMainUI extends javax.swing.JFrame {
     private void BookingStatusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BookingStatusButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BookingStatusButtonActionPerformed
+
+    private void LogoutButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutButton1MouseClicked
+        // TODO add your handling code here:
+        UserDAO.clearSessionData();
+        LoginUI user = new LoginUI();
+        user.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_LogoutButton1MouseClicked
 
     /**
      * @param args the command line arguments
