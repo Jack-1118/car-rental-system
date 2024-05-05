@@ -11,7 +11,13 @@ package carrentalsystem.ui.common;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.awt.*;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import carrentalsystem.dao.UserDAO;
+import carrentalsystem.model.User;
+import java.util.List; // Add missing import statement
 public class RegisterUI extends javax.swing.JFrame {
 
     /**
@@ -30,21 +36,23 @@ public class RegisterUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        jTextField1 = new javax.swing.JTextField();
+        GenderButtonGroup = new javax.swing.ButtonGroup();
+        UsernameField = new javax.swing.JTextField();
         label1 = new java.awt.Label();
         label2 = new java.awt.Label();
-        jTextField2 = new javax.swing.JTextField();
+        FullNameField = new javax.swing.JTextField();
         label3 = new java.awt.Label();
         label4 = new java.awt.Label();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         label5 = new java.awt.Label();
         jPasswordField1 = new javax.swing.JPasswordField();
+        DOBInput = new JDateChooser();
+        RegisterButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        UsernameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
@@ -55,7 +63,7 @@ public class RegisterUI extends javax.swing.JFrame {
 
         label2.setText("Username");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        FullNameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
             }
@@ -65,18 +73,22 @@ public class RegisterUI extends javax.swing.JFrame {
 
         label4.setText("Password");
 
-        buttonGroup1.add(jRadioButton1);
+        GenderButtonGroup.add(jRadioButton1);
         jRadioButton1.setText("Male");
 
-        buttonGroup1.add(jRadioButton2);
+        GenderButtonGroup.add(jRadioButton2);
         jRadioButton2.setText("Female");
 
         label5.setText("Gender");
 
+        DOBInput.setDateFormatString("dd-MM-yyyy");
+
+        RegisterButton.setText("Register");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -86,61 +98,134 @@ public class RegisterUI extends javax.swing.JFrame {
                         .addGap(312, 312, 312)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(UsernameField, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(FullNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addComponent(label5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jRadioButton1)
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton2))
-                            .addComponent(jPasswordField1))))
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(DOBInput, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(RegisterButton, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE))))
                 .addContainerGap(313, Short.MAX_VALUE))
         );
+
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(39, 39, 39)
+                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(13, 13, 13)
+                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(1, 1, 1)
+                    .addComponent(UsernameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(2, 2, 2)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(1, 1, 1)
+                    .addComponent(FullNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(label5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton1)
+                        .addComponent(jRadioButton2))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(DOBInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(RegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(176, Short.MAX_VALUE))
         );
+        
+        RegisterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                // Get the input values
+                String username = UsernameField.getText().trim().toUpperCase();
+                String fullName = FullNameField.getText().trim();
+                String password = new String(jPasswordField1.getPassword()).trim();
+                String gender = jRadioButton1.isSelected() ? "Male" : "Female";
+                String dob_String = DOBInput.getDateFormatString();
+                Date dob = DOBInput.getDate();  
+                // ...
+
+                // Validate the input values
+                if (username.isEmpty() || fullName.isEmpty() || password.isEmpty() || GenderButtonGroup.getSelection() == null || dob == null) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all fields.");
+                    return;
+                }
+
+                // Check if the username is already taken
+                List<User> users = UserDAO.loadUsers();
+                    for (User user : users) {
+                        if (user.getUsername().equals(username)) {
+                            JOptionPane.showMessageDialog(null, "Username have been taken. Please try another one.");
+                            return;
+                        }
+                }
+
+                // Validate password
+                if (password.length() < 8) {
+                    JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long");
+                    return;
+                }
+
+                // Validate date of birth
+                int age = calculateAge(dob);
+                if (age < 18) {
+                    JOptionPane.showMessageDialog(null, "You must be at least 18 years old to register.");
+                    return;
+                }
+                
+
+                try {
+
+                    User newUser = new User(username, password, fullName, gender, dob_String);
+                    UserDAO.saveUser(newUser);
+                    JOptionPane.showMessageDialog(null, "Registration Successful!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Registration failed. Please try again.");
+                    e.printStackTrace();
+                }
+               
+            }
+
+            private int calculateAge(Date dob) {
+                Calendar birth = Calendar.getInstance();
+                birth.setTime(dob);
+                Calendar today = Calendar.getInstance();
+                int age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+                if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
+                    age--;
+                }
+                return age;
+            }
+        });
+
+        
+
+        
+    
+        
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        String username = jTextField1.getText(); // Get the text from the JTextField
-        if (username == null || username.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-
-//            throw new IllegalArgumentException("Username cannot be empty");
-        }
+        
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -177,16 +262,18 @@ public class RegisterUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup GenderButtonGroup;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField UsernameField;
+    private javax.swing.JTextField FullNameField;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.Label label3;
     private java.awt.Label label4;
     private java.awt.Label label5;
+    private JDateChooser DOBInput;
+    private javax.swing.JToggleButton RegisterButton;
     // End of variables declaration//GEN-END:variables
 }
