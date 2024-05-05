@@ -1,3 +1,0 @@
-{"username":"user1","password":"password1","role":"user","fullName":"User One","contactNumber":"12345678","address":"123 User Street","dateOfBirth":"01/01/2000"}
-{"username":"admin1","password":"password1","role":"admin","fullName":"User One","contactNumber":"12345678","address":"123 User Street","dateOfBirth":"01/01/2000"}
-{"username":"admin","password":"admin","role":"admin","fullName":"admin","contactNumber":"admin","address":"admin","dateOfBirth":"admin"}
