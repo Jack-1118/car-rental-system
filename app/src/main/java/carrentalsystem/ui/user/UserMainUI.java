@@ -5,6 +5,7 @@
 package carrentalsystem.ui.user;
 
 import carrentalsystem.dao.UserDAO;
+import carrentalsystem.ui.common.LoginUI;
 
 /**
  *
