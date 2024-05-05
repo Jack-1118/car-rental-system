@@ -1,13 +1,17 @@
 package carrentalsystem.ui.admin;
 
 import javax.swing.*;
+
+import carrentalsystem.dao.UserDAO;
+import carrentalsystem.ui.common.LoginUI;
+
 import java.awt.*;
 import java.awt.event.*;
 
 
 public class AdminMainUI extends JFrame implements ActionListener {
     // Sidebar buttons
-    private JButton carButton, bookingButton, customerButton, reportButton, adminButton;
+    private JButton carButton, bookingButton, customerButton, reportButton, adminButton, logoutButton;
 
     public AdminMainUI() {
         // Set frame properties
@@ -27,6 +31,7 @@ public class AdminMainUI extends JFrame implements ActionListener {
         customerButton = createSidebarButton("Customer Management");
         reportButton = createSidebarButton("Generate Reports");
         adminButton = createSidebarButton("Admin Management");
+        logoutButton = createSidebarButton("Logout");
 
         // Add buttons to the sidebar
         sidebar.add(carButton);
@@ -34,6 +39,7 @@ public class AdminMainUI extends JFrame implements ActionListener {
         sidebar.add(customerButton);
         sidebar.add(reportButton);
         sidebar.add(adminButton);
+        sidebar.add(logoutButton);
 
         // Main content panel, display Car Management by default
         JPanel mainContent = new AdminCarMainUI(); // Assume AdminCarMainUI is a JPanel
@@ -59,9 +65,16 @@ public class AdminMainUI extends JFrame implements ActionListener {
         return button;
     }
 
+    private void logoutButtonClicked() {
+        LoginUI user = new LoginUI();
+        user.setVisible(true);
+        this.dispose();
+    }
+
     public void actionPerformed(ActionEvent e) {
         // Handle button clicks, similar to your original implementation
         // ...
+        logoutButtonClicked();
     }
 
     public static void main(String[] args) {
