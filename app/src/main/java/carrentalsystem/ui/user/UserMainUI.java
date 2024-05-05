@@ -56,8 +56,24 @@ public class UserMainUI extends javax.swing.JFrame {
         PaymentButton.setText("PAYMENT");
 
         BookingButton.setText("BOOKING");
+        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookingButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BookingButtonMouseEntered(evt);
+            }
+        });
 
         BookingHistoryButton.setText("BOOKING HISTORY");
+        BookingHistoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookingHistoryButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BookingHistoryButtonMouseEntered(evt);
+            }
+        });
 
         ViewCarButton.setText("VIEW CAR");
 
@@ -110,6 +126,22 @@ public class UserMainUI extends javax.swing.JFrame {
         user.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_LogoutButton1MouseClicked
+
+    private void BookingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookingButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BookingButtonMouseClicked
+
+    private void BookingButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookingButtonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BookingButtonMouseEntered
+
+    private void BookingHistoryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookingHistoryButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BookingHistoryButtonMouseClicked
+
+    private void BookingHistoryButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookingHistoryButtonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BookingHistoryButtonMouseEntered
 
     /**
      * @param args the command line arguments

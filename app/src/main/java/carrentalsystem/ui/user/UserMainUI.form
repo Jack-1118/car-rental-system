@@ -90,11 +90,19 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="BOOKING"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BookingButtonMouseClicked"/>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BookingButtonMouseEntered"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BookingHistoryButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="BOOKING HISTORY"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BookingHistoryButtonMouseClicked"/>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BookingHistoryButtonMouseEntered"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="ViewCarButton">
       <Properties>
