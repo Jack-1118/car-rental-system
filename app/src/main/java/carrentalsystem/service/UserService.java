@@ -56,6 +56,7 @@ public class UserService {
         // loop through the list of users to find the user with the matching username and password
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                UserDAO.saveSessionData(user);
                 return "customer";
             } 
         }
