@@ -6,6 +6,11 @@ package carrentalsystem.ui.common;
 
 import java.awt.Cursor;
 
+import javax.swing.JOptionPane;
+
+import carrentalsystem.service.UserService;
+import carrentalsystem.service.AdminService;
+
 /**
  *
  * @author theke
@@ -106,6 +111,38 @@ public class LoginUI extends javax.swing.JFrame {
         );
 
         pack();
+
+    LoginButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            String username = UsernameField.getText().trim().toUpperCase();
+            String password = new String(PasswordField.getPassword()).trim();
+    
+            try {
+                String role = UserService.login(username, password);
+                if (role.equals("no")) {
+                    role = AdminService.login(username, password);
+                }
+
+    
+                switch (role) {
+                    case "customer":
+                        new carrentalsystem.ui.user.UserMainUI().setVisible(true);
+                        dispose();                      
+                        break;
+                    case "admin":
+                        new carrentalsystem.ui.admin.AdminMainUI().setVisible(true);
+                        dispose();
+                        break;               
+                    default:
+                        JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
+                        break;
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+    });
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignUPLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SignUPLabelMouseClicked
