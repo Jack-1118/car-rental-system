@@ -23,7 +23,7 @@ public class UserBookingUI extends javax.swing.JFrame {
         int response = JOptionPane.showConfirmDialog(null, msg, title,
         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.YES_OPTION) {  
-            BookingDateCalendar.setDate(null);
+            StartDate.setDate(null);
             EndDate.setDate(null);
             AvailableCarList.clearSelection();
         }
@@ -38,8 +38,6 @@ public class UserBookingUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         ClearButton = new javax.swing.JButton();
         BookingButton = new javax.swing.JButton();
@@ -48,7 +46,7 @@ public class UserBookingUI extends javax.swing.JFrame {
         BookingLabel = new java.awt.Label();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
-        BookingDateCalendar = new com.toedter.calendar.JDateChooser();
+        StartDate = new com.toedter.calendar.JDateChooser();
         StartDateLabel = new java.awt.Label();
         DayLabel = new java.awt.Label();
         EndDate = new com.toedter.calendar.JDateChooser();
@@ -58,19 +56,6 @@ public class UserBookingUI extends javax.swing.JFrame {
         scrollPane1 = new java.awt.ScrollPane();
         label2 = new java.awt.Label();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -78,12 +63,6 @@ public class UserBookingUI extends javax.swing.JFrame {
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
-                ClearField("Are you sure you want to go back?", "Back");
-                UserMainUI user = new UserMainUI();
-                user.setVisible(true);
-                UserBookingUI.this.dispose();
-                
-                
             }
         });
 
@@ -93,19 +72,32 @@ public class UserBookingUI extends javax.swing.JFrame {
                 ClearButtonMouseClicked(evt);
             }
         });
-        
+        ClearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearButtonActionPerformed(evt);
+            }
+        });
 
         BookingButton.setText("Book");
-        
+        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookingButtonMouseClicked(evt);
+            }
+        });
+        BookingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BookingButtonActionPerformed(evt);
+            }
+        });
 
+        BookingDetailsLabel.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         BookingDetailsLabel.setText(" Booking Detail");
 
         BookingLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         BookingLabel.setText("Booking");
 
-        BookingDateCalendar.setMaxSelectableDate(new java.util.Date(253370739683000L));
-        BookingDateCalendar.setMinSelectableDate(new Date());
-        BookingDateCalendar.setDateFormatString("dd-MM-yyyy");
+        StartDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
+        StartDate.setMinSelectableDate(new Date());
 
         StartDateLabel.setText("Start Date");
 
@@ -113,7 +105,6 @@ public class UserBookingUI extends javax.swing.JFrame {
 
         EndDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
         EndDate.setMinSelectableDate(new Date());
-        EndDate.setDateFormatString("dd-MM-yyyy");
 
         label1.setText("Available Car");
 
@@ -142,7 +133,7 @@ public class UserBookingUI extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(BookingDateCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(StartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(StartDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,7 +192,7 @@ public class UserBookingUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(BookingDateCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(StartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(EndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,46 +209,6 @@ public class UserBookingUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
-        ClearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
-                ClearField("Are you sure you want to clear the fields?", "Clear Fields");
-            }
-        });
-
-        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BookingButtonMouseClicked(evt);
-                Date startDate = BookingDateCalendar.getDate();
-                Date endDate = EndDate.getDate();
-
-                calculateDay(startDate, endDate);
-                System.out.println("Days: " + calculateDay(startDate, endDate));
-            }
-
-            private int calculateDay(Date startDate, Date endDate) {
-                // Convert String into Date
-                Calendar start = Calendar.getInstance();
-                start.setTime(startDate);
-                Calendar end = Calendar.getInstance();
-                end.setTime(endDate);
-                
-                //compare if the start date and end date are the same
-                if(start.get(Calendar.YEAR) == end.get(Calendar.YEAR) &&
-                   start.get(Calendar.MONTH) == end.get(Calendar.MONTH) &&
-                   start.get(Calendar.DAY_OF_MONTH) == end.get(Calendar.DAY_OF_MONTH)) {
-                    return 1;
-                }
-                
-                // else calculate the difference in days
-                long differenceInMilliSeconds = endDate.getTime() - startDate.getTime();
-                long differenceInDays = TimeUnit.DAYS.convert(differenceInMilliSeconds, TimeUnit.MILLISECONDS) + 1;
-                return (int) differenceInDays;
-            }
-        });
-
-        
-        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -319,20 +270,18 @@ public class UserBookingUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> AvailableCarList;
     private javax.swing.JButton BookingButton;
-    private com.toedter.calendar.JDateChooser BookingDateCalendar;
     private java.awt.Label BookingDetailsLabel;
     private java.awt.Label BookingLabel;
     private javax.swing.JButton ClearButton;
     private java.awt.Label DayLabel;
     private com.toedter.calendar.JDateChooser EndDate;
+    private com.toedter.calendar.JDateChooser StartDate;
     private java.awt.Label StartDateLabel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable1;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.ScrollPane scrollPane1;
