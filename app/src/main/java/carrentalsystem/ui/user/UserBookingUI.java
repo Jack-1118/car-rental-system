@@ -9,14 +9,13 @@ package carrentalsystem.ui.user;
  * @author theke
  */
 
-import java.time.LocalDate;
+import java.util.Date;
 public class UserBookingUI extends javax.swing.JFrame {
 
     /**
      * Creates new form UserBookingUI
      */
     
-    LocalDate Date = LocalDate.now();
     
     public UserBookingUI() {
         initComponents();
@@ -68,9 +67,7 @@ public class UserBookingUI extends javax.swing.JFrame {
         BookingLabel.setText("Booking");
 
         BookingDateCalendar.setMaxSelectableDate(new java.util.Date(253370739683000L));
-        BookingDateCalendar.setMinSelectableDate( 
-            BookingDateCalendar.setMinSelectableDate(min);
-            dateEditor.setMinSelectableDate(min););
+        BookingDateCalendar.setMinSelectableDate(new Date());
 
         StartDateLabel.setText("Start Date");
 
