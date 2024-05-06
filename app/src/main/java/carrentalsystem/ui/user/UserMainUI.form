@@ -30,7 +30,7 @@
                   <Component id="BookingButton" alignment="0" max="32767" attributes="0"/>
                   <Component id="BookingStatusButton" alignment="0" pref="222" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="47" max="32767" attributes="0"/>
+              <EmptySpace pref="55" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="BookingHistoryButton" alignment="0" min="-2" pref="229" max="-2" attributes="0"/>
                   <Component id="PaymentButton" alignment="0" min="-2" pref="229" max="-2" attributes="0"/>
@@ -59,7 +59,7 @@
                   <Component id="PaymentButton" alignment="3" min="-2" pref="129" max="-2" attributes="0"/>
                   <Component id="LogoutButton1" alignment="3" min="-2" pref="129" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="108" max="32767" attributes="0"/>
+              <EmptySpace pref="223" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
