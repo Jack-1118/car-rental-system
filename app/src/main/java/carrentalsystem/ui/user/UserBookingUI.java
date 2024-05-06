@@ -3,11 +3,17 @@ package carrentalsystem.ui.user;
 
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.Calendar; 
+import java.util.Calendar;
 import javax.swing.JOptionPane;
-
+import carrentalsystem.dao.BookDAO;
+import carrentalsystem.dao.CarDAO;
+import carrentalsystem.model.Booking;
+import carrentalsystem.model.Car;
 import carrentalsystem.model.User;
+
+
 public class UserBookingUI extends javax.swing.JFrame {
 
     /**
@@ -66,6 +72,15 @@ public class UserBookingUI extends javax.swing.JFrame {
             }
         });
 
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearField("Are you sure you want to clear the fields?", "Clear Fields");
+                UserMainUI user = new UserMainUI();
+                user.setVisible(true);
+                UserBookingUI.this.dispose();
+            }
+        });
+
         ClearButton.setText("Clear");
         ClearButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -80,6 +95,8 @@ public class UserBookingUI extends javax.swing.JFrame {
                 BookingButtonMouseClicked(evt);
             }
         });
+
+        
         BookingDetailsLabel.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         BookingDetailsLabel.setText(" Booking Detail");
 
@@ -98,10 +115,14 @@ public class UserBookingUI extends javax.swing.JFrame {
 
         label1.setText("Available Car");
 
+        // List<Booking> bookings = BookDAO.loadBookings();
+        List<Car> cars = CarDAO.loadCars();  // Load cars from DAO
+
+        String[] carDetails = cars.stream().map(car -> car.getBrand() + " " + car.getModel() + " " + car.getYear() + " " + car.getColour() + " " + car.getPlateNumber() + " " + car.getSeatCapacity() + " " + car.getFuelType() + " " + car.getTransmission()).toArray(String[]::new);
+
         AvailableCarList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public int getSize() { return carDetails.length; }
+            public String getElementAt(int i) { return carDetails[i]; }
         });
         AvailableCarList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         AvailableCarList.setToolTipText("");
