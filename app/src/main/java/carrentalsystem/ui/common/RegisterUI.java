@@ -10,9 +10,6 @@ package carrentalsystem.ui.common;
  */
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
-import java.awt.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import carrentalsystem.dao.UserDAO;
