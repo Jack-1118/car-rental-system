@@ -1,15 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package carrentalsystem.ui.user;
 
-/**
- *
- * @author theke
- */
+
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.Calendar; 
+import javax.swing.JOptionPane;
+
+import carrentalsystem.model.User;
 public class UserBookingUI extends javax.swing.JFrame {
 
     /**
@@ -19,6 +17,16 @@ public class UserBookingUI extends javax.swing.JFrame {
     
     public UserBookingUI() {
         initComponents();
+    }
+
+    private void ClearField(String msg, String title){
+        int response = JOptionPane.showConfirmDialog(null, msg, title,
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {  
+            BookingDateCalendar.setDate(null);
+            EndDate.setDate(null);
+            AvailableCarList.clearSelection();
+        }
     }
 
     /**
@@ -70,6 +78,12 @@ public class UserBookingUI extends javax.swing.JFrame {
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
+                ClearField("Are you sure you want to go back?", "Back");
+                UserMainUI user = new UserMainUI();
+                user.setVisible(true);
+                UserBookingUI.this.dispose();
+                
+                
             }
         });
 
@@ -79,25 +93,11 @@ public class UserBookingUI extends javax.swing.JFrame {
                 ClearButtonMouseClicked(evt);
             }
         });
-        ClearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
-            }
-        });
+        
 
         BookingButton.setText("Book");
-        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BookingButtonMouseClicked(evt);
-            }
-        });
-        BookingButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BookingButtonActionPerformed(evt);
-            }
-        });
+        
 
-        BookingDetailsLabel.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         BookingDetailsLabel.setText(" Booking Detail");
 
         BookingLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
@@ -105,6 +105,7 @@ public class UserBookingUI extends javax.swing.JFrame {
 
         BookingDateCalendar.setMaxSelectableDate(new java.util.Date(253370739683000L));
         BookingDateCalendar.setMinSelectableDate(new Date());
+        BookingDateCalendar.setDateFormatString("dd-MM-yyyy");
 
         StartDateLabel.setText("Start Date");
 
@@ -112,6 +113,7 @@ public class UserBookingUI extends javax.swing.JFrame {
 
         EndDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
         EndDate.setMinSelectableDate(new Date());
+        EndDate.setDateFormatString("dd-MM-yyyy");
 
         label1.setText("Available Car");
 
@@ -216,6 +218,46 @@ public class UserBookingUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
+        ClearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearButtonActionPerformed(evt);
+                ClearField("Are you sure you want to clear the fields?", "Clear Fields");
+            }
+        });
+
+        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookingButtonMouseClicked(evt);
+                Date startDate = BookingDateCalendar.getDate();
+                Date endDate = EndDate.getDate();
+
+                calculateDay(startDate, endDate);
+                System.out.println("Days: " + calculateDay(startDate, endDate));
+            }
+
+            private int calculateDay(Date startDate, Date endDate) {
+                // Convert String into Date
+                Calendar start = Calendar.getInstance();
+                start.setTime(startDate);
+                Calendar end = Calendar.getInstance();
+                end.setTime(endDate);
+                
+                //compare if the start date and end date are the same
+                if(start.get(Calendar.YEAR) == end.get(Calendar.YEAR) &&
+                   start.get(Calendar.MONTH) == end.get(Calendar.MONTH) &&
+                   start.get(Calendar.DAY_OF_MONTH) == end.get(Calendar.DAY_OF_MONTH)) {
+                    return 1;
+                }
+                
+                // else calculate the difference in days
+                long differenceInMilliSeconds = endDate.getTime() - startDate.getTime();
+                long differenceInDays = TimeUnit.DAYS.convert(differenceInMilliSeconds, TimeUnit.MILLISECONDS) + 1;
+                return (int) differenceInDays;
+            }
+        });
+
+        
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
