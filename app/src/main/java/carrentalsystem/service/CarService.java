@@ -19,17 +19,6 @@ public class CarService {
         return CarDAO.loadCars();
     }
 
-    // Search car by respective field
-    public static List<Car> searchCar(String field, String value) {
-        List<Car> cars = CarDAO.loadCars();
-
-        // Search by field, loop through the list, check if the field matches the value
-        List<Car> searchResults = null;
-        
-
-
-        return searchResults;
-    }
     
 
 

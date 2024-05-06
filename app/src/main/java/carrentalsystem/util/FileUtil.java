@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import carrentalsystem.model.Car;
 
 
 
@@ -74,12 +73,6 @@ public class FileUtil {
         // Save the modified list back to the file
         saveFile(filePath, allData);
     }
-
-
-
-
-
-
 
 
     
