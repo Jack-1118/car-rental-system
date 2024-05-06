@@ -67,6 +67,11 @@ public class UserBookingUI extends javax.swing.JFrame {
         setResizable(false);
 
         jButton1.setText("<Back");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         ClearButton.setText("Clear");
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
@@ -211,6 +216,10 @@ public class UserBookingUI extends javax.swing.JFrame {
     private void BookingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BookingButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BookingButtonActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
