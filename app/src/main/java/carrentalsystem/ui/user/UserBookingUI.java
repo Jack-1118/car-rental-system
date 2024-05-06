@@ -74,6 +74,11 @@ public class UserBookingUI extends javax.swing.JFrame {
         });
 
         ClearButton.setText("Clear");
+        ClearButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ClearButtonMouseClicked(evt);
+            }
+        });
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearButtonActionPerformed(evt);
@@ -81,6 +86,11 @@ public class UserBookingUI extends javax.swing.JFrame {
         });
 
         BookingButton.setText("Book");
+        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookingButtonMouseClicked(evt);
+            }
+        });
         BookingButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BookingButtonActionPerformed(evt);
@@ -220,6 +230,14 @@ public class UserBookingUI extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void ClearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClearButtonMouseClicked
+
+    private void BookingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookingButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BookingButtonMouseClicked
 
     /**
      * @param args the command line arguments
