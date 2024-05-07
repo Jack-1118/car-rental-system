@@ -95,12 +95,48 @@ public class UserBookingUI extends javax.swing.JFrame {
                 ClearButtonMouseClicked(evt);
             }
         });
+        ClearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearButtonActionPerformed(evt);
+                ClearField("Are you sure you want to clear the fields?", "Clear Fields");
+            }
+        });
         
 
         BookingButton.setText("Book");
         BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BookingButtonMouseClicked(evt);
+            }
+        });
+        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BookingButtonMouseClicked(evt);
+                Date startDate = StartDate.getDate();
+                Date endDate = EndDate.getDate();
+
+                calculateDay(startDate, endDate);
+                System.out.println("Days: " + calculateDay(startDate, endDate));
+            }
+
+            private int calculateDay(Date startDate, Date endDate) {
+                // Convert String into Date
+                Calendar start = Calendar.getInstance();
+                start.setTime(startDate);
+                Calendar end = Calendar.getInstance();
+                end.setTime(endDate);
+                
+                //compare if the start date and end date are the same
+                if(start.get(Calendar.YEAR) == end.get(Calendar.YEAR) &&
+                   start.get(Calendar.MONTH) == end.get(Calendar.MONTH) &&
+                   start.get(Calendar.DAY_OF_MONTH) == end.get(Calendar.DAY_OF_MONTH)) {
+                    return 1;
+                }
+                
+                // else calculate the difference in days
+                long differenceInMilliSeconds = endDate.getTime() - startDate.getTime();
+                long differenceInDays = TimeUnit.DAYS.convert(differenceInMilliSeconds, TimeUnit.MILLISECONDS) + 1;
+                return (int) differenceInDays;
             }
         });
 
@@ -113,36 +149,14 @@ public class UserBookingUI extends javax.swing.JFrame {
 
         StartDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
         StartDate.setMinSelectableDate(new Date());
+        // StartDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        //     public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                
+        //     }
+        // });
 
         StartDateLabel.setText("Start Date");
-
-        // private void datesChanged(PropertyChangeEvent evt) {
-        //     // Check if both dates are selected
-        //     if (StartDate.getDate() != null && EndDate.getDate() != null) {
-        //         updateAvailableCarList();
-        //     }
-        // }
-
-        // private void updateAvailableCarList() {
-        //     Date startDate = StartDate.getDate();
-        //     Date endDate = EndDate.getDate();
-        //     if (startDate != null && endDate != null) {
-        //         List<Car> availableCars = findAvailableCars(startDate, endDate);
-        //         String[] carDetails = availableCars.stream().map(car -> car.toString()).toArray(String[]::new);
-    
-        //         AvailableCarList.setModel(new AbstractListModel<String>() {
-        //             public int getSize() { return carDetails.length; }
-        //             public String getElementAt(int i) { return carDetails[i]; }
-        //         });
-        //     }
-        // }
-
-        
-
-            
-            
-
-        
+  
         String[] carDetails = cars.stream().map(car -> car.getBrand() + " " + car.getModel() + " " + car.getYear() + " " + car.getColour() + " " + car.getPlateNumber() + " " + car.getSeatCapacity() + " " + car.getFuelType() + " " + car.getTransmission()).toArray(String[]::new);
 
         AvailableCarList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -244,44 +258,6 @@ public class UserBookingUI extends javax.swing.JFrame {
                         .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
-
-        ClearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
-                ClearField("Are you sure you want to clear the fields?", "Clear Fields");
-            }
-        });
-
-        BookingButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BookingButtonMouseClicked(evt);
-                Date startDate = StartDate.getDate();
-                Date endDate = EndDate.getDate();
-
-                calculateDay(startDate, endDate);
-                System.out.println("Days: " + calculateDay(startDate, endDate));
-            }
-
-            private int calculateDay(Date startDate, Date endDate) {
-                // Convert String into Date
-                Calendar start = Calendar.getInstance();
-                start.setTime(startDate);
-                Calendar end = Calendar.getInstance();
-                end.setTime(endDate);
-                
-                //compare if the start date and end date are the same
-                if(start.get(Calendar.YEAR) == end.get(Calendar.YEAR) &&
-                   start.get(Calendar.MONTH) == end.get(Calendar.MONTH) &&
-                   start.get(Calendar.DAY_OF_MONTH) == end.get(Calendar.DAY_OF_MONTH)) {
-                    return 1;
-                }
-                
-                // else calculate the difference in days
-                long differenceInMilliSeconds = endDate.getTime() - startDate.getTime();
-                long differenceInDays = TimeUnit.DAYS.convert(differenceInMilliSeconds, TimeUnit.MILLISECONDS) + 1;
-                return (int) differenceInDays;
-            }
-        });
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
