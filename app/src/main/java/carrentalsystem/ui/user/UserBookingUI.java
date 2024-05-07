@@ -5,7 +5,10 @@ package carrentalsystem.ui.user;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.Calendar;
+
+import javax.swing.AbstractListModel;
 import javax.swing.JOptionPane;
 import carrentalsystem.dao.BookDAO;
 import carrentalsystem.dao.CarDAO;
@@ -19,10 +22,15 @@ public class UserBookingUI extends javax.swing.JFrame {
     /**
      * Creates new form UserBookingUI
      */
+
+    private List<Car> cars;
+    private List<Booking> bookings;
     
     
     public UserBookingUI() {
         initComponents();
+        cars = CarDAO.loadCars();
+        bookings = BookDAO.loadBookings();
     }
 
     private void ClearField(String msg, String title){
@@ -108,16 +116,33 @@ public class UserBookingUI extends javax.swing.JFrame {
 
         StartDateLabel.setText("Start Date");
 
-        DayLabel.setText("End Date");
+        // private void datesChanged(PropertyChangeEvent evt) {
+        //     // Check if both dates are selected
+        //     if (StartDate.getDate() != null && EndDate.getDate() != null) {
+        //         updateAvailableCarList();
+        //     }
+        // }
 
-        EndDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
-        EndDate.setMinSelectableDate(new Date());
+        // private void updateAvailableCarList() {
+        //     Date startDate = StartDate.getDate();
+        //     Date endDate = EndDate.getDate();
+        //     if (startDate != null && endDate != null) {
+        //         List<Car> availableCars = findAvailableCars(startDate, endDate);
+        //         String[] carDetails = availableCars.stream().map(car -> car.toString()).toArray(String[]::new);
+    
+        //         AvailableCarList.setModel(new AbstractListModel<String>() {
+        //             public int getSize() { return carDetails.length; }
+        //             public String getElementAt(int i) { return carDetails[i]; }
+        //         });
+        //     }
+        // }
 
-        label1.setText("Available Car");
+        
 
-        // List<Booking> bookings = BookDAO.loadBookings();
-        List<Car> cars = CarDAO.loadCars();  // Load cars from DAO
+            
+            
 
+        
         String[] carDetails = cars.stream().map(car -> car.getBrand() + " " + car.getModel() + " " + car.getYear() + " " + car.getColour() + " " + car.getPlateNumber() + " " + car.getSeatCapacity() + " " + car.getFuelType() + " " + car.getTransmission()).toArray(String[]::new);
 
         AvailableCarList.setModel(new javax.swing.AbstractListModel<String>() {
