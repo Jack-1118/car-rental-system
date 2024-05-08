@@ -36,7 +36,7 @@ public class AdminMainUI extends JFrame implements ActionListener {
         sidebar.add(adminButton);
 
         // Main content panel, display Car Management by default
-        JPanel mainContent = new AdminCustMainUI(); // Assume AdminCarMainUI is a JPanel
+        JPanel mainContent = new AdminReportMainUI(); // Assume AdminCarMainUI is a JPanel
         mainContent.setBackground(Color.WHITE);
 
         // Set layout and add components

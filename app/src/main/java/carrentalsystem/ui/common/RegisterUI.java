@@ -12,6 +12,7 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.User;
 import java.util.List; // Add missing import statement
