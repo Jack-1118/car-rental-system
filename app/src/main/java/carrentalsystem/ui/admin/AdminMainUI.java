@@ -65,16 +65,9 @@ public class AdminMainUI extends JFrame implements ActionListener {
         return button;
     }
 
-    private void logoutButtonClicked() {
-        LoginUI user = new LoginUI();
-        user.setVisible(true);
-        this.dispose();
-    }
-
     public void actionPerformed(ActionEvent e) {
         // Handle button clicks, similar to your original implementation
         // ...
-        logoutButtonClicked();
     }
 
     public static void main(String[] args) {
