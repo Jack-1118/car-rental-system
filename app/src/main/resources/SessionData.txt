@@ -1,0 +1,1 @@
+{"username":"JACK","password":"12345678","fullName":"jack","gender":"Male","dateOfBirth":"16-05-2004"}

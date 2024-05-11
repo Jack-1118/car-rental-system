@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import carrentalsystem.model.Car;
+
 
 
 
@@ -104,5 +104,30 @@ public class FileUtil {
         saveFile(filePath, allData);
     }
 
+    public static <T> void clearSession(String filepath, List<T> list) {
+        try {
+            // Clear the file
+            Files.write(
+                Paths.get(filepath),
+                "".getBytes(),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING
+            );
+
+            // Append the objects from the list
+            for (T object : list) {
+                String json = objectMapper.writeValueAsString(object) + System.lineSeparator();
+
+                Files.write(
+                    Paths.get(filepath),
+                    json.getBytes(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
