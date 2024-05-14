@@ -5,6 +5,7 @@
 package carrentalsystem.ui.common;
 
 import java.awt.Cursor;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,9 @@ import javax.swing.JOptionPane;
 
 import carrentalsystem.service.UserService;
 import carrentalsystem.dao.BookDAO;
+import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.Booking;
+import carrentalsystem.model.User;
 import carrentalsystem.service.AdminService;
 
 /**
@@ -32,15 +35,82 @@ public class LoginUI extends javax.swing.JFrame {
 
     public static void systemAutoCancel() {
         List<Booking> bookings = BookDAO.loadBookings();
-        for (Booking booking : bookings) {
-            if (booking.getPaymentStatus().equals("Pending Payment") &&
-                    (booking.getStartDate().compareTo(new SimpleDateFormat("dd-MM-yyyy").format(new Date())) == 0)) {
-                booking.setStatus("Cancelled");
-                BookDAO.modifyBooking(booking);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false); // Prevents parsing dates like 30-02-2020
+
+        Date today = new Date();
+        
+
+        try {
+            Date todayFormatted = sdf.parse(sdf.format(today)); // Today's date at midnight
+
+            for (Booking booking : bookings) {
+                Date bookingStartDate = sdf.parse(booking.getStartDate()); // Parsing booking start date
+
+                if (booking.getPaymentStatus().equals("Pending Payment") &&
+                        !bookingStartDate.after(todayFormatted)) { // Check if the start date is today or before
+                    booking.setStatus("Cancelled");
+                    BookDAO.modifyBooking(booking);
+                }
             }
+        } catch (ParseException e) {
+            e.printStackTrace(); // Handle parse exceptions if date format is wrong
         }
     }
 
+    public static String userType(String username, String Password){
+        List<User> admin = UserDAO.loadAdmins();
+        List<User> customer = UserDAO.loadUsers();
+
+        for (User user : admin) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(Password)) {
+                return "admin";
+            }
+        }
+        for (User user : customer) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(Password)) {
+                UserDAO.saveSessionData(user);
+                return "customer";
+            }
+        }
+        return "no";
+
+    }
+
+    public void Login(){
+        String username = UsernameField.getText().trim().toUpperCase();
+        String password = new String(PasswordField.getPassword()).trim();
+
+        try {
+            // String role = UserService.login(username, password);
+            // if (role.equals("no")) {
+            //     role = AdminService.login(username, password);
+            // }
+            if(username.isEmpty() || password.isEmpty()){
+                throw new IllegalArgumentException("Please fill in all fields.");
+            }
+
+            switch (userType(username, password)) {
+                case "customer":
+                    systemAutoCancel();
+                    
+                    new carrentalsystem.ui.user.UserMainUI().setVisible(true);
+                    dispose();
+                    break;
+                case "admin":
+                    systemAutoCancel();
+                    new carrentalsystem.ui.admin.AdminMainUI().setVisible(true);
+                    dispose();
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +135,11 @@ public class LoginUI extends javax.swing.JFrame {
 
         LoginLabel.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         LoginLabel.setText("Login");
+        LoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LoginButtonMouseClicked(evt);
+            }
+        });
 
         UsernameLabel.setText("Username");
 
@@ -135,39 +210,6 @@ public class LoginUI extends javax.swing.JFrame {
                 .addContainerGap(105, Short.MAX_VALUE)));
 
         pack();
-
-        LoginButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String username = UsernameField.getText().trim().toUpperCase();
-                String password = new String(PasswordField.getPassword()).trim();
-
-                try {
-                    String role = UserService.login(username, password);
-                    if (role.equals("no")) {
-                        role = AdminService.login(username, password);
-                    }
-
-                    switch (role) {
-                        case "customer":
-                            systemAutoCancel();
-                            new carrentalsystem.ui.user.UserMainUI().setVisible(true);
-                            dispose();
-                            break;
-                        case "admin":
-                            systemAutoCancel();
-                            new carrentalsystem.ui.admin.AdminMainUI().setVisible(true);
-                            dispose();
-                            break;
-                        default:
-                            JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
-                            break;
-                    }
-                } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
-                }
-            }
-        });
-
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignUPLabelMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_SignUPLabelMouseClicked
@@ -181,6 +223,11 @@ public class LoginUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         SignUPLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }// GEN-LAST:event_SignUPLabelMouseEntered
+
+    private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_LoginButtonMouseClicked
+        // TODO add your handling code here:
+        Login();
+    }// GEN-LAST:event_LoginButtonMouseClicked
 
     /**
      * @param args the command line arguments
