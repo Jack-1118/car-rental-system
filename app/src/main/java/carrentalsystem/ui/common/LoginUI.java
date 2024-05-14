@@ -1,76 +1,281 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package carrentalsystem.ui.common;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Cursor;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import carrentalsystem.service.UserService;
+import carrentalsystem.dao.BookDAO;
+import carrentalsystem.dao.UserDAO;
+import carrentalsystem.model.Booking;
+import carrentalsystem.model.User;
+import carrentalsystem.service.AdminService;
 
-public class LoginUI extends JFrame {
+/**
+ *
+ * @author theke
+ */
 
-    private JTextField usernameField;
-    private JPasswordField passwordField;
+public class LoginUI extends javax.swing.JFrame {
 
+    /**
+     * Creates new form LoginUI
+     */
     public LoginUI() {
-        setTitle("Login");
-        setSize(300, 200);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the window on the screen
         initComponents();
     }
 
-    private void initComponents() {
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    public static void systemAutoCancel() {
+        List<Booking> bookings = BookDAO.loadBookings();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false); // Prevents parsing dates like 30-02-2020
 
-        JLabel usernameLabel = new JLabel("Username:");
-        usernameField = new JTextField();
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordField = new JPasswordField();
-        JButton loginButton = new JButton("Login");
+        Date today = new Date();
+        
 
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(new JLabel()); // Empty label for spacing
-        panel.add(loginButton);
+        try {
+            Date todayFormatted = sdf.parse(sdf.format(today)); // Today's date at midnight
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                String role = UserService.login(username, password); 
+            for (Booking booking : bookings) {
+                Date bookingStartDate = sdf.parse(booking.getStartDate()); // Parsing booking start date
 
-                // direct user to respective main UI based on role
-                switch (role) {
-                    case "user":
-                        new carrentalsystem.ui.user.UserMainUI().setVisible(true);
-                        dispose();                      
-                        break;
-                    case "admin":
-                        new carrentalsystem.ui.admin.AdminMainUI().setVisible(true);
-                        dispose();
-                        break;               
-                    default:
-                        JOptionPane.showMessageDialog(LoginUI.this, "Invalid username or password. Please try again.");
-                        break;
+                if (booking.getPaymentStatus().equals("Pending Payment") &&
+                        !bookingStartDate.after(todayFormatted)) { // Check if the start date is today or before
+                    booking.setStatus("Cancelled");
+                    BookDAO.modifyBooking(booking);
                 }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace(); // Handle parse exceptions if date format is wrong
+        }
+    }
 
+    public static String userType(String username, String Password){
+        List<User> admin = UserDAO.loadAdmins();
+        List<User> customer = UserDAO.loadUsers();
+
+        for (User user : admin) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(Password)) {
+                return "admin";
+            }
+        }
+        for (User user : customer) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(Password)) {
+                UserDAO.saveSessionData(user);
+                return "customer";
+            }
+        }
+        return "no";
+
+    }
+
+    public void Login(){
+        String username = UsernameField.getText().trim().toUpperCase();
+        String password = new String(PasswordField.getPassword()).trim();
+
+        try {
+            // String role = UserService.login(username, password);
+            // if (role.equals("no")) {
+            //     role = AdminService.login(username, password);
+            // }
+            if(username.isEmpty() || password.isEmpty()){
+                throw new IllegalArgumentException("Please fill in all fields.");
+            }
+
+            switch (userType(username, password)) {
+                case "customer":
+                    systemAutoCancel();
+                    
+                    new carrentalsystem.ui.user.UserMainUI().setVisible(true);
+                    dispose();
+                    break;
+                case "admin":
+                    systemAutoCancel();
+                    new carrentalsystem.ui.admin.AdminMainUI().setVisible(true);
+                    dispose();
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Invalid username or password. Please try again.");
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        LoginLabel = new java.awt.Label();
+        UsernameField = new javax.swing.JTextField();
+        PasswordField = new javax.swing.JPasswordField();
+        UsernameLabel = new javax.swing.JLabel();
+        PasswordLabel = new javax.swing.JLabel();
+        LoginButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        SignUPLabel = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        LoginLabel.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
+        LoginLabel.setText("Login");
+        LoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LoginButtonMouseClicked(evt);
             }
         });
 
-        add(panel);
-    }
+        UsernameLabel.setText("Username");
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
+        PasswordLabel.setText("Password");
+
+        LoginButton.setText("LOGIN");
+
+        jLabel1.setText("Don't have an account?");
+
+        SignUPLabel.setText("SIGN UP");
+        SignUPLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SignUPLabelMouseClicked(evt);
+            }
+
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                SignUPLabelMouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LoginLabel, javax.swing.GroupLayout.PREFERRED_SIZE,
+                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(374, 374, 374))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(313, 313, 313)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(SignUPLabel))
+                    .addComponent(PasswordLabel)
+                    .addComponent(UsernameLabel)
+                    .addComponent(UsernameField, javax.swing.GroupLayout.DEFAULT_SIZE, 219,
+                        Short.MAX_VALUE)
+                    .addComponent(PasswordField)
+                    .addComponent(LoginButton, javax.swing.GroupLayout.DEFAULT_SIZE,
+                    javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+         .addContainerGap(312, Short.MAX_VALUE)));
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(LoginLabel, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(UsernameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(UsernameField, javax.swing.GroupLayout.PREFERRED_SIZE,
+                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(PasswordLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE,
+                javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(81, 81, 81)
+                .addComponent(LoginButton)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(SignUPLabel))
+                .addContainerGap(105, Short.MAX_VALUE)));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void SignUPLabelMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_SignUPLabelMouseClicked
+        // TODO add your handling code here:
+        RegisterUI user = new RegisterUI();
+        user.setVisible(true);
+        this.dispose();
+    }// GEN-LAST:event_SignUPLabelMouseClicked
+
+    private void SignUPLabelMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_SignUPLabelMouseEntered
+        // TODO add your handling code here:
+        SignUPLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }// GEN-LAST:event_SignUPLabelMouseEntered
+
+    private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_LoginButtonMouseClicked
+        // TODO add your handling code here:
+        Login();
+    }// GEN-LAST:event_LoginButtonMouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel.
+         * For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        // </editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LoginUI().setVisible(true);
             }
         });
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LoginButton;
+    private java.awt.Label LoginLabel;
+    private javax.swing.JPasswordField PasswordField;
+    private javax.swing.JLabel PasswordLabel;
+    private javax.swing.JLabel SignUPLabel;
+    private javax.swing.JTextField UsernameField;
+    private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JLabel jLabel1;
+    // End of variables declaration//GEN-END:variables
 }

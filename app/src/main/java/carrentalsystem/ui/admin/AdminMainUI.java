@@ -1,13 +1,19 @@
 package carrentalsystem.ui.admin;
 
 import javax.swing.*;
+
+import carrentalsystem.dao.UserDAO;
+import carrentalsystem.ui.common.LoginUI;
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class AdminMainUI extends JFrame implements ActionListener {
 
-    private JButton carButton, bookingButton, customerButton, reportButton, adminButton;
+    // Sidebar buttons
+    private JButton carButton, bookingButton, customerButton, reportButton, adminButton, logoutButton;
     private JPanel mainContent;
+
 
     public AdminMainUI() {
 
@@ -27,12 +33,14 @@ public class AdminMainUI extends JFrame implements ActionListener {
         customerButton = createSidebarButton("Customer Management");
         reportButton = createSidebarButton("Generate Reports");
         adminButton = createSidebarButton("Admin Management");
+        logoutButton = createSidebarButton("Logout");
 
         sidebar.add(carButton);
         sidebar.add(bookingButton);
         sidebar.add(customerButton);
         sidebar.add(reportButton);
         sidebar.add(adminButton);
+        sidebar.add(logoutButton);
 
         // Initialize main content panel
         mainContent = new JPanel(new BorderLayout());

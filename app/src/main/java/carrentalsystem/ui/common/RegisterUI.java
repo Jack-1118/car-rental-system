@@ -10,6 +10,10 @@ package carrentalsystem.ui.common;
  */
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
+
+import java.awt.Cursor;
+import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -24,6 +28,75 @@ public class RegisterUI extends javax.swing.JFrame {
     public RegisterUI() {
         initComponents();
     }
+
+    private int calculateAge(Date dob) {
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(dob);
+        Calendar today = Calendar.getInstance();
+        int age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+        return age;
+    }
+
+    public void Register(){
+        // Get the input values
+        String username = UsernameField.getText().trim().toUpperCase();
+        String fullName = FullNameField.getText().trim();
+        String password = new String(jPasswordField1.getPassword()).trim();
+        String gender = jRadioButton1.isSelected() ? "Male" : "Female";
+        Date dob = DOBInput.getDate();  
+        // ...
+        try {
+            // Validate the input values
+            if (username.isEmpty() || fullName.isEmpty() || password.isEmpty() || GenderButtonGroup.getSelection() == null || dob == null) {
+                JOptionPane.showMessageDialog(null, "Please fill in all fields.");
+                return;
+            }
+            
+
+            // Check if the username is already taken
+            List<User> users = UserDAO.loadUsers();
+                for (User user : users) {
+                    if (user.getUsername().equals(username)) {
+                        JOptionPane.showMessageDialog(null, "Username have been taken. Please try another one.");
+                        return;
+                    }
+            }
+
+            // Validate password
+            if (password.length() < 8) {
+                JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long");
+                return;
+            }
+            
+
+            // Validate date of birth
+            int age = calculateAge(dob);
+            if (age < 18) {
+                JOptionPane.showMessageDialog(null, "You must be at least 18 years old to register.");
+                return;
+            }
+            
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String formattedDate = sdf.format(dob); // Format date to string
+
+            User newUser = new User(username, password, fullName, gender, formattedDate);
+            UserDAO.saveUser(newUser);
+            JOptionPane.showMessageDialog(null, "Registration Successful!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Registration failed. Please try again.");
+            e.printStackTrace();
+        }
+       
+    }
+
+    
+
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,20 +157,27 @@ public class RegisterUI extends javax.swing.JFrame {
         DOBInput.setDateFormatString("dd-MM-yyyy");
 
         RegisterButton.setText("Register");
+        RegisterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RegisterButtonMouseClicked(evt);
+            }
+        });
 
         AccountLabel.setText("Already have an account?");
 
         LoginLabel.setText("Login");
         LoginLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LoginUI login = new LoginUI();
-                login.setVisible(true);
-                RegisterUI.this.dispose();
+                LoginLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                LoginLabelMouseEntered(evt);
             }
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+        setResizable(false);
         layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -165,79 +245,6 @@ public class RegisterUI extends javax.swing.JFrame {
                     .addComponent(LoginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(176, Short.MAX_VALUE))
     );
-
-        
-        RegisterButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // Get the input values
-                String username = UsernameField.getText().trim().toUpperCase();
-                String fullName = FullNameField.getText().trim();
-                String password = new String(jPasswordField1.getPassword()).trim();
-                String gender = jRadioButton1.isSelected() ? "Male" : "Female";
-                Date dob = DOBInput.getDate();  
-                // ...
-
-                // Validate the input values
-                if (username.isEmpty() || fullName.isEmpty() || password.isEmpty() || GenderButtonGroup.getSelection() == null || dob == null) {
-                    JOptionPane.showMessageDialog(null, "Please fill in all fields.");
-                    return;
-                }
-
-                // Check if the username is already taken
-                List<User> users = UserDAO.loadUsers();
-                    for (User user : users) {
-                        if (user.getUsername().equals(username)) {
-                            JOptionPane.showMessageDialog(null, "Username have been taken. Please try another one.");
-                            return;
-                        }
-                }
-
-                // Validate password
-                if (password.length() < 8) {
-                    JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long");
-                    return;
-                }
-
-                // Validate date of birth
-                int age = calculateAge(dob);
-                if (age < 18) {
-                    JOptionPane.showMessageDialog(null, "You must be at least 18 years old to register.");
-                    return;
-                }
-                
-
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    String formattedDate = sdf.format(dob); // Format date to string
-
-                    User newUser = new User(username, password, fullName, gender, formattedDate);
-                    UserDAO.saveUser(newUser);
-                    JOptionPane.showMessageDialog(null, "Registration Successful!");
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Registration failed. Please try again.");
-                    e.printStackTrace();
-                }
-               
-            }
-
-            private int calculateAge(Date dob) {
-                Calendar birth = Calendar.getInstance();
-                birth.setTime(dob);
-                Calendar today = Calendar.getInstance();
-                int age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-                if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
-                    age--;
-                }
-                return age;
-            }
-        });
-
-        
-
-        
-    
-        
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -249,6 +256,23 @@ public class RegisterUI extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void LoginLabelMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_SignUPLabelMouseClicked
+        // TODO add your handling code here:
+        LoginUI login = new LoginUI();
+        login.setVisible(true);
+        RegisterUI.this.dispose();
+    }// GEN-LAST:event_LoginLabelMouseClicked
+
+    private void LoginLabelMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_SignUPLabelMouseEntered
+        // TODO add your handling code here:
+        LoginLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }// GEN-LAST:event_LoginLabelMouseEntered
+
+    private void RegisterButtonMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_RegisterButtonMouseClicked
+        // TODO add your handling code here:
+        Register();
+    }// GEN-LAST:event_RegisterButtonMouseClicked
 
     
     /**
