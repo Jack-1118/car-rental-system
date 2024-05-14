@@ -61,6 +61,8 @@ public class AdminReportMainUI extends JPanel {
         
         // Here you should add logic to fetch data based on these selections
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        
         // TODO:Dummy data logic, replace with real data fetching
         dataset.addValue(200, "Toyota Camry", selectedPeriod);
         dataset.addValue(150, "Honda Accord", selectedPeriod);
