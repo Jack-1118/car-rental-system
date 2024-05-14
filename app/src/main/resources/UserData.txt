@@ -1,0 +1,2 @@
+{"username":"JACK","password":"12345678","fullName":"jack","gender":"Male","dateOfBirth":"16-05-2004"}
+{"username":"ALEX","password":"12345678","fullName":"Alex Wu Yi Fan","gender":"Male","dateOfBirth":"19-05-2004"}
