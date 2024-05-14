@@ -28,6 +28,12 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 
     implementation 'com.toedter:jcalendar:1.4'
+
+    // JFreeChart for generating charts
+    implementation 'org.jfree:jfreechart:1.5.3'
+    
+    // JCommon library needed by JFreeChart
+    implementation 'org.jfree:jcommon:1.0.24'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

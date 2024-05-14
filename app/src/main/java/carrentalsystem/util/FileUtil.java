@@ -76,12 +76,6 @@ public class FileUtil {
     }
 
 
-
-
-
-
-
-
     
     // Modify a record in the file
     public static <T> void modifyRecord(String filePath, Class<T> type, Predicate<T> predicate, T newObject) {

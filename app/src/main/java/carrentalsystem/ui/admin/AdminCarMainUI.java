@@ -100,6 +100,7 @@ public class AdminCarMainUI extends JPanel {
         return model;
     }
 
+
     private void setupListeners() {
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) { updateFilter(); }
@@ -172,7 +173,7 @@ public class AdminCarMainUI extends JPanel {
 
 
         // Buttons for submitting or cancelling
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Add");
         JButton cancelButton = new JButton("Cancel");
 
         // Listener for the submit button
