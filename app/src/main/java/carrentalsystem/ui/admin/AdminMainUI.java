@@ -8,22 +8,24 @@ import carrentalsystem.ui.common.LoginUI;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class AdminMainUI extends JFrame implements ActionListener {
+
     // Sidebar buttons
     private JButton carButton, bookingButton, customerButton, reportButton, adminButton, logoutButton;
+    private JPanel mainContent;
+
 
     public AdminMainUI() {
-        // Set frame properties
+
         setTitle("Admin Dashboard");
-        setSize(1300, 800); // Increased size for a more spacious layout
+        setSize(1300, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the frame on screen
+        setLocationRelativeTo(null);
 
         // Create the sidebar
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
-        sidebar.setBackground(Color.DARK_GRAY); // Set the background color of the sidebar
+        sidebar.setBackground(Color.DARK_GRAY);
 
         // Initialize buttons and add them to the sidebar
         carButton = createSidebarButton("Car Management");
@@ -33,7 +35,6 @@ public class AdminMainUI extends JFrame implements ActionListener {
         adminButton = createSidebarButton("Admin Management");
         logoutButton = createSidebarButton("Logout");
 
-        // Add buttons to the sidebar
         sidebar.add(carButton);
         sidebar.add(bookingButton);
         sidebar.add(customerButton);
@@ -41,36 +42,55 @@ public class AdminMainUI extends JFrame implements ActionListener {
         sidebar.add(adminButton);
         sidebar.add(logoutButton);
 
-        // Main content panel, display Car Management by default
-        JPanel mainContent = new AdminCarMainUI(); // Assume AdminCarMainUI is a JPanel
-        mainContent.setBackground(Color.WHITE);
+        // Initialize main content panel
+        mainContent = new JPanel(new BorderLayout());
+        setMainPanel(new AdminCarMainUI()); 
 
-        // Set layout and add components
+        
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(sidebar, BorderLayout.WEST);
         getContentPane().add(mainContent, BorderLayout.CENTER);
 
-        // Display the frame
         setVisible(true);
     }
 
     // Helper method to create and style sidebar buttons
     private JButton createSidebarButton(String text) {
         JButton button = new JButton(text);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button text
-        button.setBackground(Color.LIGHT_GRAY); // Set the button background
-        button.setForeground(Color.WHITE); // Set the text color
-        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height)); // Make buttons expand to full width
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setForeground(Color.WHITE);
+        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height));
         button.addActionListener(this);
         return button;
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        // Handle button clicks, similar to your original implementation
-        // ...
+        Object source = e.getSource();
+        if (source == carButton) {
+            setMainPanel(new AdminCarMainUI());
+        } else if (source == bookingButton) {
+            //TODO: setMainPanel(new AdminBookingMainUI());
+        } else if (source == customerButton) {
+            setMainPanel(new AdminCustMainUI()); 
+        } else if (source == reportButton) {
+            setMainPanel(new AdminReportMainUI());
+        } else if (source == adminButton) {
+            //TODO: setMainPanel(new AdminManagementMainUI()); 
+        }
+    }
+
+    // Method to switch main panel contents
+    private void setMainPanel(JPanel panel) {
+        mainContent.removeAll();
+        mainContent.add(panel);
+        mainContent.revalidate();
+        mainContent.repaint();
     }
 
     public static void main(String[] args) {
         new AdminMainUI();
+
     }
 }
