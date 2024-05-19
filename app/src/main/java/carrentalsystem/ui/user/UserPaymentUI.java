@@ -11,6 +11,8 @@ import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.Booking;
 import carrentalsystem.model.Car;
 import carrentalsystem.model.SharedData;
+import carrentalsystem.model.User;
+
 import javax.swing.JOptionPane;
 
 public class UserPaymentUI extends javax.swing.JFrame {
@@ -27,13 +29,14 @@ public class UserPaymentUI extends javax.swing.JFrame {
 
         // Now call initComponents which might use currentBookingId and currentCarId
         initComponents();
+        renderBookingData();
 
         // Test
         System.out.println("Current Booking ID: " + currentBookingId);
         System.out.println("Current Car ID: " + currentCarId);
     }
 
-    public void Pay() {
+    private void Pay() {
         String cardNumber = CardNumberField.getText().trim();
         String cardHolderName = CardHolderNameField.getText().trim();
         String cardBankName = CardBankNameField.getText().trim();
@@ -76,6 +79,92 @@ public class UserPaymentUI extends javax.swing.JFrame {
 
     }
 
+    private void renderBookingData(){
+        String CarBrand = null;
+        String CarModel = null;
+        String CarYear = null;
+        String CarColour = null;
+        String SeatCapacity = null;
+        String FuelType = null;
+        String Transmission = null;
+        String RentalRate = null;
+        String RentalLocation = null;
+        double CarRentalRate = 0.0;
+
+        List<Car> carList = CarDAO.loadCars();
+        for (Car car : carList) {
+            if (car.getCarID() == currentCarId) {
+                CarBrand = (car.getBrand());
+                CarModel = (car.getModel());
+                CarYear = Integer.toString(car.getYear());
+                CarColour = (car.getColour());
+                SeatCapacity = (Integer.toString(car.getSeatCapacity()));
+                FuelType = (car.getFuelType());
+                Transmission = (car.getTransmission());
+                RentalRate = (Double.toString(car.getRentalRate()));
+                CarRentalRate = car.getRentalRate();
+                RentalLocation = (car.getRentalLocation());
+            }
+        }
+
+        CarBrandField.setText(CarBrand);
+        CarModelField.setText(CarModel);
+        CarYearField.setText(CarYear);
+        CarColourField.setText(CarColour);
+        SeatCapacityField.setText(SeatCapacity);
+        FuelTypeField.setText(FuelType);
+        TransmissionField.setText(Transmission);
+        RentalRateField.setText(RentalRate);
+        RentalLocationField.setText(RentalLocation);
+
+        String StartingDate = null;
+        String EndingDate = null;
+        Double TotalAmount = 0.0;
+        String Username = null;
+
+        RentalLocationLabel.setText("Rental Location");
+
+        List<Booking> bookingList = BookDAO.loadBookings();
+        for (Booking booking : bookingList) {
+            if (booking.getBookingID() == currentBookingId) {
+                StartingDate = (booking.getStartDate());
+                EndingDate = (booking.getEndDate());
+                TotalAmount = (booking.getAmount());
+                Username = (booking.getUsername());
+            }
+        }
+
+        StartingDateField.setText(StartingDate);
+        EndingDateField.setText(EndingDate);
+
+        
+        BookingIDField.setText(Integer.toString(currentBookingId)); // Convert BookingID to a string  Integer.toString(currentBookingId)
+
+        System.out.println("nooking id inside ui" + currentBookingId);
+
+
+        int TotalDays = Double.valueOf(TotalAmount).intValue() / Double.valueOf(CarRentalRate).intValue();
+        ReceiptArea.setText(
+                "Car Rental Rate: " + CarRentalRate +
+                        "\n" +
+                        "Total Days: " + TotalDays +
+                        "\n" +
+                        "Total Amount: " + TotalAmount
+        );
+
+        
+        List<User> user = UserDAO.loadUsers();
+        for (User users : user){
+            if (users.getUsername().equals(Username)) {
+                UsernameField.setText(users.getUsername());
+                FullNameField.setText(users.getFullName());
+                GenderField.setText(users.getGender());
+                DateOfBirthField.setText(users.getDateOfBirth());
+            }
+        }
+  
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -146,69 +235,41 @@ public class UserPaymentUI extends javax.swing.JFrame {
 
         BookingDetailLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         BookingDetailLabel.setText("Booking Details");
-        // Integer.toString(currentCarId)
-
-        String CarBrand = null;
-        String CarModel = null;
-        String CarYear = null;
-        String CarColour = null;
-        String SeatCapacity = null;
-        String FuelType = null;
-        String Transmission = null;
-        String RentalRate = null;
-        String RentalLocation = null;
-        double CarRentalRate = 0.0;
-
-        List<Car> carList = CarDAO.loadCars();
-        for (Car car : carList) {
-            if (car.getCarID() == currentCarId) {
-                CarBrand = (car.getBrand());
-                CarModel = (car.getModel());
-                CarYear = Integer.toString(car.getYear());
-                CarColour = (car.getColour());
-                SeatCapacity = (Integer.toString(car.getSeatCapacity()));
-                FuelType = (car.getFuelType());
-                Transmission = (car.getTransmission());
-                RentalRate = (Double.toString(car.getRentalRate()));
-                CarRentalRate = car.getRentalRate();
-                RentalLocation = (car.getRentalLocation());
-            }
-        }
-
+        
         CarBrandField.setEditable(false);
-        CarBrandField.setText(CarBrand);
+        CarBrandField.setText("CarBrand");
         CarBrandField.setEnabled(false);
 
         CarModelField.setEditable(false);
-        CarModelField.setText(CarModel);
+        CarModelField.setText("CarModel");
         CarModelField.setEnabled(false);
 
         CarYearField.setEditable(false);
-        CarYearField.setText(CarYear);
+        CarYearField.setText("CarYear");
         CarYearField.setEnabled(false);
 
         CarColourField.setEditable(false);
-        CarColourField.setText(CarColour);
+        CarColourField.setText("CarColour");
         CarColourField.setEnabled(false);
 
         SeatCapacityField.setEditable(false);
-        SeatCapacityField.setText(SeatCapacity);
+        SeatCapacityField.setText("SeatCapacity");
         SeatCapacityField.setEnabled(false);
 
         FuelTypeField.setEditable(false);
-        FuelTypeField.setText(FuelType);
+        FuelTypeField.setText("FuelType");
         FuelTypeField.setEnabled(false);
 
         TransmissionField.setEditable(false);
-        TransmissionField.setText(Transmission);
+        TransmissionField.setText("Transmission");
         TransmissionField.setEnabled(false);
 
         RentalRateField.setEditable(false);
-        RentalRateField.setText(RentalRate);
+        RentalRateField.setText("RentalRate");
         RentalRateField.setEnabled(false);
 
         RentalLocationField.setEditable(false);
-        RentalLocationField.setText(RentalLocation);
+        RentalLocationField.setText("RentalLocation");
         RentalLocationField.setEnabled(false);
 
         CarDetailsLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -230,36 +291,22 @@ public class UserPaymentUI extends javax.swing.JFrame {
 
         RentalRateLabel.setText("Rental Rate");
 
-        String StartingDate = null;
-        String EndingDate = null;
-        Double TotalAmount = 0.0;
-
-        RentalLocationLabel.setText("Rental Location");
-
-        List<Booking> bookingList = BookDAO.loadBookings();
-        for (Booking booking : bookingList) {
-            if (booking.getBookingID() == currentBookingId) {
-                StartingDate = (booking.getStartDate());
-                EndingDate = (booking.getEndDate());
-                TotalAmount = (booking.getAmount());
-            }
-        }
 
         BookingIDLabel.setText("BookingID");
 
         BookingIDField.setEditable(false);
-        BookingIDField.setText(Integer.toString(currentBookingId)); // Convert BookingID to a string
-                                                                    // Integer.toString(currentBookingId)
+        BookingIDField.setText("currentBookingId"); 
+                                                                    
         BookingIDField.setEnabled(false);
 
-        System.out.println("nooking id inside ui" + currentBookingId);
+        
 
         StartingDateField.setEditable(false);
-        StartingDateField.setText(StartingDate);
+        StartingDateField.setText("StartingDate");
         StartingDateField.setEnabled(false);
 
         EndingDateField.setEditable(false);
-        EndingDateField.setText(EndingDate);
+        EndingDateField.setText("EndingDate");
         EndingDateField.setEnabled(false);
 
         StartingDateLabel.setText("Starting Date");
@@ -486,25 +533,22 @@ public class UserPaymentUI extends javax.swing.JFrame {
         PersonalDetail.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         PersonalDetail.setText("Personal Details");
 
-        String Username = UserDAO.loadSessionData().get(0).getUsername();
-        String FullName = UserDAO.loadSessionData().get(0).getFullName();
-        String Gender = UserDAO.loadSessionData().get(0).getGender();
-        String DateOfBirth = UserDAO.loadSessionData().get(0).getDateOfBirth();
+        
 
         UsernameField.setEditable(false);
-        UsernameField.setText(Username);
+        UsernameField.setText("Username");
         UsernameField.setEnabled(false);
 
         UsernameLabel.setText("Username");
 
         FullNameField.setEditable(false);
-        FullNameField.setText(FullName);
+        FullNameField.setText("FullName");
         FullNameField.setEnabled(false);
 
         FullNameLabel.setText("FullName");
 
         GenderField.setEditable(false);
-        GenderField.setText(Gender);
+        GenderField.setText("Gender");
         GenderField.setEnabled(false);
 
         GenderLabel.setText("Gender");
@@ -512,7 +556,7 @@ public class UserPaymentUI extends javax.swing.JFrame {
         DateOfBirthLabel.setText("Date of Birth");
 
         DateOfBirthField.setEditable(false);
-        DateOfBirthField.setText(DateOfBirth);
+        DateOfBirthField.setText("DateOfBirth");
         DateOfBirthField.setEnabled(false);
 
         PaymentDetailsLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -704,14 +748,7 @@ public class UserPaymentUI extends javax.swing.JFrame {
         ReceiptArea.setEnabled(false);
         ReceiptArea.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         ReceiptArea.setName(""); // NOI18N
-        int TotalDays = Double.valueOf(TotalAmount).intValue() / Double.valueOf(CarRentalRate).intValue();
-        ReceiptArea.setText(
-                "Car Rental Rate: " + CarRentalRate +
-                        "\n" +
-                        "Total Days: " + TotalDays +
-                        "\n" +
-                        "Total Amount: " + TotalAmount);
-
+        ReceiptArea.setText("Receipt");
         javax.swing.GroupLayout panel4Layout = new javax.swing.GroupLayout(panel4);
         panel4.setLayout(panel4Layout);
         panel4Layout.setHorizontalGroup(

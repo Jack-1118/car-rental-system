@@ -23,14 +23,14 @@ public class UserBookingUI extends javax.swing.JFrame {
      * Creates new form UserBookingUI
      */
 
-    private List<Car> cars;
-    private List<Booking> bookings;
+    // private List<Car> cars;
+    // private List<Booking> bookings;
     
     
     public UserBookingUI() {
         initComponents();
-        cars = CarDAO.loadCars();
-        bookings = BookDAO.loadBookings();
+        // cars = CarDAO.loadCars();
+        // bookings = BookDAO.loadBookings();
     }
 
     private void ClearField(String msg, String title){
@@ -156,7 +156,7 @@ public class UserBookingUI extends javax.swing.JFrame {
         // });
 
         StartDateLabel.setText("Start Date");
-  
+        List<Car> cars = CarDAO.loadCars();
         String[] carDetails = cars.stream().map(car -> car.getBrand() + " " + car.getModel() + " " + car.getYear() + " " + car.getColour() + " " + car.getPlateNumber() + " " + car.getSeatCapacity() + " " + car.getFuelType() + " " + car.getTransmission()).toArray(String[]::new);
 
         AvailableCarList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -313,6 +313,7 @@ public class UserBookingUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new UserBookingUI().setVisible(true);
+                System.out.println(); 
             }
         });
     }

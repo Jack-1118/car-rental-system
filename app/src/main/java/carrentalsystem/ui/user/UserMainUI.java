@@ -9,7 +9,7 @@ import carrentalsystem.ui.common.LoginUI;
 import carrentalsystem.ui.BasePanel;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Calendar;
 
 import java.util.Date;
@@ -17,16 +17,17 @@ import java.util.Date;
 import java.util.List;
 
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
+
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import carrentalsystem.dao.BookDAO;
 import carrentalsystem.dao.CarDAO;
 import carrentalsystem.model.Booking;
 import carrentalsystem.model.Car;
-import carrentalsystem.model.User;
 import carrentalsystem.model.SharedData;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -39,15 +40,47 @@ public class UserMainUI extends BasePanel {
          */
         public UserMainUI() {
                 initComponents();
+                CarList();
+                populatePaymentList();
         }
 
-        public void BookCar(){
+        public void CarList() {
+                DefaultTableModel model = (DefaultTableModel) BookingTable.getModel();
+                model.setRowCount(0); // Clear existing data
+
+                List<Car> cars = CarDAO.loadCars();
+
+                boolean hasCar = false;
+
+                for (Car car : cars) {
+                        hasCar = true;
+                        model.addRow(new Object[] {
+                                        car.getCarID(),
+                                        car.getBrand(),
+                                        car.getModel(),
+                                        car.getYear(),
+                                        car.getColour(),
+                                        car.getSeatCapacity(),
+                                        car.getFuelType(),
+                                        car.getTransmission(),
+                                        car.getRentalRate(),
+                                        car.getRentalLocation()
+                        });
+
+                }
+
+                if (!hasCar) {
+                        model.addRow(new Object[] { "no car", "no car", "no car", "no car", "no car", "no car",
+                                        "no car" });
+                }
+        }
+
+        public void BookCar() {
                 // Get the input from user
                 Date startDate = StartDate.getDate();
                 Date endDate = EndDate.getDate();
                 int selectedRow = BookingTable.getSelectedRow();
-                int carID = ((Integer) BookingTable.getValueAt(BookingTable.getSelectedRow(), 0))
-                                .intValue();
+                int carID = ((Integer) BookingTable.getValueAt(BookingTable.getSelectedRow(), 0)).intValue();
                 System.out.println("Selected Car: " + carID);
 
                 // Check if the user has selected a car and all fields are filled
@@ -115,7 +148,6 @@ public class UserMainUI extends BasePanel {
 
                         StartDate.setDate(null);
                         EndDate.setDate(null);
-                        ModelList.setSelectedIndex(0);
                         BookingTable.clearSelection();
                         JOptionPane.showMessageDialog(null,
                                         "Your booking will take 3 Working Days to be approved. Thank you for your patience.");
@@ -146,20 +178,39 @@ public class UserMainUI extends BasePanel {
                 return (int) differenceInDays;
         }
 
-
         private void ClearField(String msg, String title) {
                 int response = JOptionPane.showConfirmDialog(null, msg, title,
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) {
                         StartDate.setDate(null);
                         EndDate.setDate(null);
-                        ModelList.setSelectedIndex(0);
                         BookingTable.clearSelection();
                 }
         }
 
-        private void Payment(){
-                
+        private void populatePaymentList() {
+                DefaultListModel<String> displayBookings = new DefaultListModel<>();
+                List<Booking> bookings = BookDAO.loadBookings();
+                String username = UserDAO.loadSessionData().get(0).getUsername();
+                for (Booking booking : bookings) {
+                        if (booking.getUsername().equals(username) &&
+                                        booking.getPaymentStatus().equals("Pending Payment") &&
+                                        booking.getStatus().equals("Approved")) {
+
+                                String displayText = "Booking ID: " + booking.getBookingID() +
+                                                                ", Car ID: " + booking.getCarID() +
+                                                                ", Start Date: " + booking.getStartDate() +
+                                                                ", Status: " + booking.getPaymentStatus() +
+                                                                ", Amount: " + booking.getAmount();
+                                displayBookings.addElement(displayText); // Replace 'add' with 'addElement'
+                                System.out.println(displayText);
+                        }
+                }
+                PendingPaymentList.setModel(displayBookings);  // assuming your JList variable is nameList
+        }
+        
+        private void Payment() {
+
                 String selectedBooking = PendingPaymentList.getSelectedValue();
                 if (selectedBooking == null) {
                         JOptionPane.showMessageDialog(null, "Please select a booking to proceed.");
@@ -180,7 +231,6 @@ public class UserMainUI extends BasePanel {
 
         }
 
-        
         /**
          * This method is called from within the constructor to initialize the form.
          * WARNING: Do NOT modify this code. The content of this method is always
@@ -191,376 +241,428 @@ public class UserMainUI extends BasePanel {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">
         private void initComponents() {
 
-        RentalStoreNameLabel = new java.awt.Label();
-        Profile = new javax.swing.JButton();
-        panel1 = new java.awt.Panel();
-        AvailableCarLabel = new javax.swing.JLabel();
-        ModelList = new javax.swing.JComboBox<>();
-        PickUpLocationList = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        BookingTable = new javax.swing.JTable();
-        HistoryButton = new javax.swing.JButton();
-        LogoutButton = new javax.swing.JButton();
-        panel4 = new java.awt.Panel();
-        StartDateLabel = new java.awt.Label();
-        StartDate = new com.toedter.calendar.JDateChooser();
-        EndDateLbel = new java.awt.Label();
-        EndDate = new com.toedter.calendar.JDateChooser();
-        ClearButton = new javax.swing.JButton();
-        BookCarButton = new javax.swing.JButton();
-        PaymentButton = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        PendingPaymentList = new javax.swing.JList<>();
-        BookingStatusLabel = new java.awt.Label();
-        PaymentNoticeLabel = new java.awt.Label();
-        panel2 = new java.awt.Panel();
+                RentalStoreNameLabel = new java.awt.Label();
+                Profile = new javax.swing.JButton();
+                panel1 = new java.awt.Panel();
+                AvailableCarLabel = new javax.swing.JLabel();
+                jScrollPane1 = new javax.swing.JScrollPane();
+                BookingTable = new javax.swing.JTable();
+                HistoryButton = new javax.swing.JButton();
+                LogoutButton = new javax.swing.JButton();
+                panel4 = new java.awt.Panel();
+                StartDateLabel = new java.awt.Label();
+                StartDate = new com.toedter.calendar.JDateChooser();
+                EndDateLbel = new java.awt.Label();
+                EndDate = new com.toedter.calendar.JDateChooser();
+                ClearButton = new javax.swing.JButton();
+                BookCarButton = new javax.swing.JButton();
+                PaymentButton = new javax.swing.JButton();
+                jScrollPane3 = new javax.swing.JScrollPane();
+                PendingPaymentList = new javax.swing.JList<>();
+                BookingStatusLabel = new java.awt.Label();
+                PaymentNoticeLabel = new java.awt.Label();
+                panel2 = new java.awt.Panel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setResizable(false);
+                setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+                setResizable(false);
 
-        RentalStoreNameLabel.setAlignment(java.awt.Label.CENTER);
-        RentalStoreNameLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        RentalStoreNameLabel.setText("SOYA CAR RENTAL");
+                RentalStoreNameLabel.setAlignment(java.awt.Label.CENTER);
+                RentalStoreNameLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+                RentalStoreNameLabel.setText("SOYA CAR RENTAL");
 
-        Profile.setText("Profile");
-        Profile.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        ProfileMouseClicked(evt);
-                }
-        });
-                
-        AvailableCarLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        AvailableCarLabel.setText("Available Car");
-
-                List<Car> cars = CarDAO.loadCars();
-                List<String> carModels = cars.stream().map(Car::getModel).collect(Collectors.toList());
-                ModelList.setModel(new javax.swing.DefaultComboBoxModel<>(carModels.toArray(new String[0])));
-                ModelList.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                ModelListActionPerformed(evt);
+                Profile.setText("Profile");
+                Profile.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                ProfileMouseClicked(evt);
                         }
                 });
 
-                // Create column names
-                String[] columnNames = {
-                                "ID",
-                                "Brand",
-                                "Model",
-                                "Year",
-                                "Colour",
-                                "Seat Capacity",
-                                "Fuel Type",
-                                "Transmission",
-                                "Rental Rate",
-                                "Rental Location"
-                };
+                AvailableCarLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+                AvailableCarLabel.setText("Available Car");
 
-                // Create 2D array for table data
-                Object[][] data = new Object[cars.size()][columnNames.length];
+                BookingTable.setModel(new javax.swing.table.DefaultTableModel(
+                                new Object[][] {
 
-                // Fill data array with car data
-                for (int i = 0; i < cars.size(); i++) {
-                        Car car = cars.get(i);
-                        data[i][0] = car.getCarID();
-                        data[i][1] = car.getBrand();
-                        data[i][2] = car.getModel();
-                        data[i][3] = car.getYear();
-                        data[i][4] = car.getColour();
-                        data[i][5] = car.getSeatCapacity();
-                        data[i][6] = car.getFuelType();
-                        data[i][7] = car.getTransmission();
-                        data[i][8] = car.getRentalRate();
-                        data[i][9] = car.getRentalLocation();
-                }
-
-                // Create table model
-                BookingTable.setModel(new javax.swing.table.DefaultTableModel(data,columnNames) {
+                                },
+                                new String[] {
+                                                "ID",
+                                                "Brand",
+                                                "Model",
+                                                "Year",
+                                                "Colour",
+                                                "Seat Capacity",
+                                                "Fuel Type",
+                                                "Transmission",
+                                                "Rental Rate",
+                                                "Rental Location"
+                                }) {
                         boolean[] canEdit = new boolean[] {
-                                        false, false, false, false, false, false, false, false, false, false, false
+                                        false, false, false, false, false, false, false, false, false, false
                         };
 
                         public boolean isCellEditable(int rowIndex, int columnIndex) {
                                 return canEdit[columnIndex];
                         }
                 });
-                BookingTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                BookingTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+                BookingTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
                 BookingTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
                 BookingTable.setShowHorizontalLines(true);
                 BookingTable.setShowVerticalLines(true);
                 BookingTable.getTableHeader().setReorderingAllowed(false);
-                BookingTable.getTableHeader().setResizingAllowed(false);
-
                 jScrollPane1.setViewportView(BookingTable);
 
+               
+                javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+                panel1.setLayout(panel1Layout);
+                panel1Layout.setHorizontalGroup(
+                                panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(panel1Layout.createSequentialGroup()
+                                                                .addGroup(panel1Layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addGroup(panel1Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addGap(17, 17, 17)
+                                                                                                .addComponent(AvailableCarLabel,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                201,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                                                .addGroup(panel1Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addContainerGap()
+                                                                                                .addComponent(jScrollPane1,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                916,
+                                                                                                                Short.MAX_VALUE)))
+                                                                .addContainerGap()));
+                panel1Layout.setVerticalGroup(
+                                panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(panel1Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addComponent(AvailableCarLabel)
+                                                                .addGap(27, 27, 27)
+                                                                .addComponent(jScrollPane1,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                216,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addContainerGap(33, Short.MAX_VALUE)));
 
-
-
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(AvailableCarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 916, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(AvailableCarLabel)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
-        );
-
-
-
-        HistoryButton.setText("Booking History");
-        HistoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        HistoryButtonMouseClicked(evt);
-                }
-        });
-
-        LogoutButton.setText("Logout");
-        LogoutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                LogoutButton.setText("Logout");
+                LogoutButton.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 LogoutButtonMouseClicked(evt);
                         }
                 });
 
-        Calendar calendar = Calendar.getInstance(); // Get the current date
-        calendar.add(Calendar.DATE, 3); // Add 3 days
-        Date dateThreeDaysLater = calendar.getTime(); // Convert it back to a Date object
+                Calendar calendar = Calendar.getInstance(); // Get the current date
+                calendar.add(Calendar.DATE, 3); // Add 3 days
+                Date dateThreeDaysLater = calendar.getTime(); // Convert it back to a Date object
 
-        StartDate.setMinSelectableDate(dateThreeDaysLater);
+                StartDate.setMinSelectableDate(dateThreeDaysLater);
 
-        StartDateLabel.setText("Start Date");
-        StartDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
-        StartDate.setMinSelectableDate(dateThreeDaysLater);
+                StartDateLabel.setText("Start Date");
+                StartDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
+                StartDate.setMinSelectableDate(dateThreeDaysLater);
 
-        EndDateLbel.setText("End Date");
-        EndDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
-        EndDate.setMinSelectableDate(dateThreeDaysLater);
+                EndDateLbel.setText("End Date");
+                EndDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
+                EndDate.setMinSelectableDate(dateThreeDaysLater);
 
-        ClearButton.setText("Clear");
-        ClearButton.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        ClearButtonMouseClicked(evt);
-                }
-        });
+                ClearButton.setText("Clear");
+                ClearButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                ClearButtonMouseClicked(evt);
+                        }
+                });
 
-        BookCarButton.setText("Book Car");
-        BookCarButton.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        BookCarButtonMouseClicked(evt);
-                        
-        }});
+                BookCarButton.setText("Book Car");
+                BookCarButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                BookCarButtonMouseClicked(evt);
 
-        PaymentButton.setText("Payment");
-        PaymentButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                        }
+                });
+
+                PaymentButton.setText("Payment");
+                PaymentButton.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 PaymentButtonMouseClicked(evt);
                         }
                 });
-        
 
-        // PendingPaymentList.setModel(new javax.swing.AbstractListModel<String>() {
-        // String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-        // public int getSize() { return strings.length; }
-        // public String getElementAt(int i) { return strings[i]; }
-        // });
-        // PendingPaymentList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-        // public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-        //         PaymentListValueChanged(evt);
-        // }
-        // });
-
-        
-        PendingPaymentList.setModel(new javax.swing.AbstractListModel<String>() {
-                private final List<String> displayBookings = new ArrayList<>();
-
-                {
-                        List<Booking> bookings = BookDAO.loadBookings();
-                        String username = UserDAO.loadSessionData().get(0).getUsername();
-                        for (Booking booking : bookings) {
-                                if (booking.getUsername().equals(username) &&
-                                                booking.getPaymentStatus().equals("Pending Payment") &&
-                                                booking.getStatus().equals("Approved")) {
-
-                                        String displayText = "Booking ID: " + booking.getBookingID() +
-                                                        ", Car ID: " + booking.getCarID() +
-                                                        ", Start Date: " + booking.getStartDate() +
-                                                        ", Status: " + booking.getPaymentStatus() +
-                                                        ", Amount: " + booking.getAmount();
-                                        displayBookings.add(displayText);
-                                        System.out.println(displayText);
-                                }
-                        }
-
+                PendingPaymentList.setModel(new javax.swing.AbstractListModel<String>() {
+                        String[] strings = { "displayBookings" };
+                        public int getSize() { return strings.length; }
+                        public String getElementAt(int i) { return strings[i]; }
+                    });
+                PendingPaymentList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+                PendingPaymentList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                PendingPaymentList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+                public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                        PendingPaymentListValueChanged(evt);
                 }
-
-                public int getSize() {
-                        return displayBookings.size();
-
-                }
-
-                public String getElementAt(int i) {
-                        return displayBookings.get(i);
-                }
-        });
-
-        BookingStatusLabel.setText("Booking Status - Pending Payment");
-        jScrollPane3.setViewportView(PendingPaymentList);
-
-        PaymentNoticeLabel.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        PaymentNoticeLabel.setText("Payment must be made by the day before your start date to avoid automatic cancellation.");
-
-        javax.swing.GroupLayout panel4Layout = new javax.swing.GroupLayout(panel4);
-        panel4.setLayout(panel4Layout);
-        panel4Layout.setHorizontalGroup(
-            panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel4Layout.createSequentialGroup()
-                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(StartDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(StartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(EndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EndDateLbel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panel4Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(ClearButton)
-                        .addGap(122, 122, 122)
-                        .addComponent(BookCarButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panel4Layout.createSequentialGroup()
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PaymentNoticeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BookingStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(96, 96, 96))
-                    .addGroup(panel4Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(PaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-        );
-        panel4Layout.setVerticalGroup(
-            panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(StartDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EndDateLbel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BookingStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel4Layout.createSequentialGroup()
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(StartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ClearButton)
-                            .addComponent(BookCarButton)))
-                    .addGroup(panel4Layout.createSequentialGroup()
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(PaymentNoticeLabel , javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-
-
-
-
-
-        RentalStoreNameLabel.setAlignment(java.awt.Label.CENTER);
-        RentalStoreNameLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        RentalStoreNameLabel.setText("SOYA CAR RENTAL");
-
-        HistoryButton.setText("Booking History");
-        HistoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        HistoryButtonMouseClicked(evt);
-                        
-                }
-        });
-        
-
-        Profile.setText("Profile");
-        Profile.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        ProfileMouseClicked(evt);
-                }
-        });
+                });
                 
 
-        javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
-        panel2.setLayout(panel2Layout);
-        panel2Layout.setHorizontalGroup(
-            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(HistoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(RentalStoreNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(LogoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        panel2Layout.setVerticalGroup(
-            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Profile, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(LogoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(HistoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RentalStoreNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                BookingStatusLabel.setText("Booking Status - Pending Payment");
+                jScrollPane3.setViewportView(PendingPaymentList);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10))
-        );
+                PaymentNoticeLabel.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+                PaymentNoticeLabel.setText(
+                                "Payment must be made by the day before your start date to avoid automatic cancellation.");
+
+                javax.swing.GroupLayout panel4Layout = new javax.swing.GroupLayout(panel4);
+                panel4.setLayout(panel4Layout);
+                panel4Layout.setHorizontalGroup(
+                                panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel4Layout
+                                                                .createSequentialGroup()
+                                                                .addGroup(panel4Layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addGroup(panel4Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addContainerGap()
+                                                                                                .addGroup(panel4Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(StartDateLabel,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(StartDate,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                156,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                .addGap(38, 38, 38)
+                                                                                                .addGroup(panel4Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(EndDate,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                156,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(EndDateLbel,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                .addGroup(panel4Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addGap(45, 45, 45)
+                                                                                                .addComponent(ClearButton)
+                                                                                                .addGap(122, 122, 122)
+                                                                                                .addComponent(BookCarButton)))
+                                                                .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                44, Short.MAX_VALUE)
+                                                                .addGroup(panel4Layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                false)
+                                                                                .addGroup(panel4Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addGroup(panel4Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(PaymentNoticeLabel,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(BookingStatusLabel,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                214,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                .addGap(96, 96, 96))
+                                                                                .addGroup(panel4Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addComponent(jScrollPane3)
+                                                                                                .addPreferredGap(
+                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                .addComponent(PaymentButton,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                77,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addContainerGap()))));
+                panel4Layout.setVerticalGroup(
+                                panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(panel4Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(panel4Layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(StartDateLabel,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(EndDateLbel,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(BookingStatusLabel,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(panel4Layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addGroup(panel4Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addGroup(panel4Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(StartDate,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(EndDate,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                .addGap(28, 28, 28)
+                                                                                                .addGroup(panel4Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                                .addComponent(ClearButton)
+                                                                                                                .addComponent(BookCarButton)))
+                                                                                .addGroup(panel4Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addGroup(panel4Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(jScrollPane3,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                53,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(PaymentButton,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                53,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                .addPreferredGap(
+                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                .addComponent(PaymentNoticeLabel,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addContainerGap(31, Short.MAX_VALUE)));
+
+                RentalStoreNameLabel.setAlignment(java.awt.Label.CENTER);
+                RentalStoreNameLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+                RentalStoreNameLabel.setText("SOYA CAR RENTAL");
+
+                HistoryButton.setText("Booking History");
+                HistoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                HistoryButtonMouseClicked(evt);
+
+                        }
+                });
+
+                Profile.setText("Profile");
+                Profile.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                ProfileMouseClicked(evt);
+                        }
+                });
+
+                javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
+                panel2.setLayout(panel2Layout);
+                panel2Layout.setHorizontalGroup(
+                                panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(panel2Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addComponent(HistoryButton,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                166,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(42, 42, 42)
+                                                                .addComponent(RentalStoreNameLabel,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                420,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(25, 25, 25)
+                                                                .addComponent(Profile,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                102,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                .addComponent(LogoutButton,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                102,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addContainerGap()));
+                panel2Layout.setVerticalGroup(
+                                panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(panel2Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(panel2Layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                .addGroup(panel2Layout
+                                                                                                .createParallelGroup(
+                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                .addComponent(Profile,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                53,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addComponent(LogoutButton,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                53,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                .addComponent(HistoryButton,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                53,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(RentalStoreNameLabel,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                56,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)));
+
+                javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+                getContentPane().setLayout(layout);
+                layout.setHorizontalGroup(
+                                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(
+                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(panel4,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE)
+                                                                                .addComponent(panel1,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE)
+                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                                .addContainerGap()
+                                                                                                .addComponent(panel2,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                Short.MAX_VALUE)))
+                                                                .addContainerGap()));
+                layout.setVerticalGroup(
+                                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
+                                                                .createSequentialGroup()
+                                                                .addContainerGap(38, Short.MAX_VALUE)
+                                                                .addComponent(panel2,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(21, 21, 21)
+                                                                .addComponent(panel1,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(panel4,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(10, 10, 10)));
                 pack();
         }// </editor-fold>
 
@@ -601,9 +703,11 @@ public class UserMainUI extends BasePanel {
                 Payment();
         }
 
-        private void PaymentListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+        private void PendingPaymentListValueChanged(javax.swing.event.ListSelectionEvent evt) {
                 // TODO add your handling code here:
+                
         }
+
         /**
          * @param args the command line arguments
          */
@@ -656,9 +760,8 @@ public class UserMainUI extends BasePanel {
         private java.awt.Label EndDateLbel;
         private javax.swing.JButton HistoryButton;
         private javax.swing.JButton LogoutButton;
-        private javax.swing.JComboBox<String> ModelList;
+        // private javax.swing.JComboBox<String> ModelList;
         private javax.swing.JButton PaymentButton;
-        private javax.swing.JComboBox<String> PickUpLocationList;
         private javax.swing.JButton Profile;
         private com.toedter.calendar.JDateChooser StartDate;
         private java.awt.Label StartDateLabel;
