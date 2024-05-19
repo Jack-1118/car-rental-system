@@ -271,12 +271,6 @@ public class UserMainUI extends BasePanel {
                 RentalStoreNameLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
                 RentalStoreNameLabel.setText("SOYA CAR RENTAL");
 
-                Profile.setText("Profile");
-                Profile.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                ProfileMouseClicked(evt);
-                        }
-                });
 
                 AvailableCarLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
                 AvailableCarLabel.setText("Available Car");
@@ -686,6 +680,9 @@ public class UserMainUI extends BasePanel {
 
         private void ProfileMouseClicked(java.awt.event.MouseEvent evt) {
                 // TODO add your handling code here:
+                UserProfileUI userProfileUI = new UserProfileUI();
+                userProfileUI.setVisible(true);
+                this.dispose();
         }
 
         private void ClearButtonMouseClicked(java.awt.event.MouseEvent evt) {

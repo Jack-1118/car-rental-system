@@ -40,7 +40,7 @@ public class RegisterUI extends javax.swing.JFrame {
         return age;
     }
 
-    public void Register(){
+    private void Register(){
         // Get the input values
         String username = UsernameField.getText().trim().toUpperCase();
         String fullName = FullNameField.getText().trim();

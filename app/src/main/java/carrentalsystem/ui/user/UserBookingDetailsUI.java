@@ -11,8 +11,9 @@ import carrentalsystem.model.Booking;
 import carrentalsystem.model.Car;
 import carrentalsystem.model.SharedData;
 import carrentalsystem.model.User;
+import carrentalsystem.ui.BasePanel;
 
-public class UserBookingDetailsUI extends javax.swing.JFrame{
+public class UserBookingDetailsUI extends BasePanel{
     private int currentBookingId; // Unset state is -1
     private int currentCarId; // Unset state is -1
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
+import carrentalsystem.ui.BasePanel;
 import carrentalsystem.ui.user.UserMainUI;
 import carrentalsystem.dao.BookDAO;
 import carrentalsystem.dao.CarDAO;
@@ -15,7 +16,7 @@ import carrentalsystem.model.User;
 
 import javax.swing.JOptionPane;
 
-public class UserPaymentUI extends javax.swing.JFrame {
+public class UserPaymentUI extends BasePanel {
     private int currentBookingId; // Unset state is -1
     private int currentCarId; // Unset state is -1
 

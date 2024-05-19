@@ -4,6 +4,8 @@ import carrentalsystem.dao.BookDAO;
 import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.Booking;
 import carrentalsystem.model.SharedData;
+import carrentalsystem.ui.BasePanel;
+
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -12,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 
-public class UserBookingHistoryUI extends javax.swing.JFrame {
+public class UserBookingHistoryUI extends BasePanel {
 
         /**
          * Creates new form BookingHistory
