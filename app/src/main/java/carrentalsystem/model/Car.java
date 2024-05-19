@@ -1,24 +1,24 @@
 package carrentalsystem.model;
 
 
-public class Car {
+    public class Car {
 
-    // car information
-    private int carID;
-    private String brand;
-    private String model;
-    private int year;
-    private String plateNumber;
-    private String colour;
-    private int seatCapacity;
-    private String fuelType;
-    private String transmission;
+        // car information
+        private int carID;
+        private String brand;
+        private String model;
+        private int year;
+        private String plateNumber;
+        private String colour;
+        private int seatCapacity;
+        private String fuelType;
+        private String transmission;
 
 
-    // rental information
-    private boolean available;
-    private double rentalRate;
-    private String rentalLocation;
+        // rental information
+        private boolean available;
+        private double rentalRate;
+        private String rentalLocation;
 
 
     // constructor

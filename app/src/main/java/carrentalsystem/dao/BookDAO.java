@@ -1,8 +1,7 @@
 package carrentalsystem.dao;
 
 import java.util.List;
-
-
+import java.util.stream.Collectors;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -26,6 +25,16 @@ public class BookDAO {
         Collections.sort(Bookings, Comparator.comparing(Booking::getCarID));
         return Bookings;
     }
+
+    public static List<Booking> loadApprovedBookings() {
+        List<Booking> bookings = FileUtil.loadFile(DATA_FILE_PATH, Booking.class);
+        bookings = bookings.stream()
+                        .filter(booking -> "Approved".equals(booking.getStatus()))
+                        .collect(Collectors.toList());
+        Collections.sort(bookings, Comparator.comparing(Booking::getCarID));
+        return bookings;
+    }
+
 
     
     

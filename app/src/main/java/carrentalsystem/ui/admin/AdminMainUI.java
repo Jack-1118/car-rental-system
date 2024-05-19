@@ -2,7 +2,6 @@ package carrentalsystem.ui.admin;
 
 import javax.swing.*;
 
-import carrentalsystem.dao.UserDAO;
 import carrentalsystem.ui.common.LoginUI;
 
 import java.awt.*;
@@ -77,7 +76,11 @@ public class AdminMainUI extends JFrame implements ActionListener {
         } else if (source == reportButton) {
             setMainPanel(new AdminReportMainUI());
         } else if (source == adminButton) {
-            //TODO: setMainPanel(new AdminManagementMainUI()); 
+            setMainPanel(new AdminAddMainUI()); 
+        } else if (source == logoutButton) {
+            LoginUI loginUI = new LoginUI();
+            loginUI.setVisible(true);
+            dispose();
         }
     }
 

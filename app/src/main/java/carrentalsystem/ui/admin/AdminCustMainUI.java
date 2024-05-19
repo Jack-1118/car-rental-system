@@ -24,12 +24,10 @@ public class AdminCustMainUI extends JPanel {
 
     private void initializeComponents() {
         // Button panel
-        viewButton = new JButton("View Customer");
         deleteButton = new JButton("Delete Customer");
         historyButton = new JButton("View Booking History");
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.add(viewButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(historyButton);
 
@@ -64,82 +62,48 @@ public class AdminCustMainUI extends JPanel {
     }
 
     private void setupListeners() {
-        viewButton.addActionListener(e -> showEditCustomerDialog());
         deleteButton.addActionListener(e -> deleteSelectedCustomer());
         // historyButton.addActionListener(e -> viewCustomerHistory());
     }
 
 
 
-    private void showEditCustomerDialog() {
-        int selectedRow = customerTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            String username = (String) customerTable.getValueAt(selectedRow, 0); // Assuming username is at column 0
-            User customer = UserDAO.getUserByUsername(username); // Retrieve the customer details
-    
-            if (customer != null) {
-                JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(this), "Edit Customer", Dialog.ModalityType.APPLICATION_MODAL);
-                JPanel formPanel = new JPanel(new GridLayout(0, 2));
-    
-                // Creating text fields pre-filled with customer data
-                JTextField usernameField = new JTextField(customer.getUsername(), 20);
-                usernameField.setEditable(false); 
-                JTextField fullNameField = new JTextField(customer.getFullName(), 20);
-                fullNameField.setEditable(false);
-                JTextField genderField = new JTextField(customer.getGender(), 20);
-                genderField.setEditable(false);
-                JTextField dobField = new JTextField(customer.getDateOfBirth(), 20);
-                dobField.setEditable(false);
-    
-                // Add components to formPanel
-                formPanel.add(new JLabel("Username:"));
-                formPanel.add(usernameField);
-                formPanel.add(new JLabel("Fullname:"));
-                formPanel.add(fullNameField);
-                formPanel.add(new JLabel("Gender:"));
-                formPanel.add(genderField);
-                formPanel.add(new JLabel("Date of Birth:"));
-                formPanel.add(dobField);
-    
-                // Buttons for cancelling
-                JButton cancelButton = new JButton("Cancel");
-    
-                cancelButton.addActionListener(e -> dialog.dispose());
-    
-                // Panel for holding the buttons
-                JPanel buttonPanel = new JPanel();
-                buttonPanel.add(cancelButton);
-    
-                // Arrange panels in the dialog
-                dialog.setLayout(new BorderLayout());
-                dialog.add(formPanel, BorderLayout.CENTER);
-                dialog.add(buttonPanel, BorderLayout.PAGE_END);
-    
-                // Show the dialog
-                dialog.pack();
-                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(this));
-                dialog.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Selected customer could not be found.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No customer selected. Please select a customer to view.", "Error", JOptionPane.WARNING_MESSAGE);
-        }
-    }
 
     private void deleteSelectedCustomer() {
         int selectedRow = customerTable.getSelectedRow();
         if (selectedRow >= 0) {
             String username = (String) customerTable.getValueAt(selectedRow, 0);
-            UserDAO.deleteUser(username);
-            JOptionPane.showMessageDialog(this, "Customer deleted successfully.");
-            // Refresh the table
-        } else {
+            User customerToDelete = UserDAO.getUserByUsername(username); 
+            
+            //Confirm deletion, display all details
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete this customer?\n" + 
+                "Username: " + customerToDelete.getUsername() + "\n" +
+                "Full Name: " + customerToDelete.getFullName() + "\n" +
+                "This action cannot be undone.",
+                "Confirm Deletion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                UserDAO.deleteUser(customerToDelete.getUsername());
+                JOptionPane.showMessageDialog(this, "Customer deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                refreshCustList();
+        } 
+    } else {
             JOptionPane.showMessageDialog(this, "No customer selected.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    
     }
 
-    // private void viewCustomerHistory() {
+    private void refreshCustList() {
+        List<User> users = UserDAO.loadUsers();
+        DefaultTableModel model = createTableModel(users);
+        customerTable.setModel(model);
+    }
+
+    // TODO:private void viewCustomerHistory() {
     //     int selectedRow = customerTable.getSelectedRow();
     //     if (selectedRow >= 0) {
     //         int customerId = (Integer) customerTable.getValueAt(selectedRow, 0);

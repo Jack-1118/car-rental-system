@@ -3,8 +3,6 @@ package carrentalsystem.util;
 import javax.swing.text.NumberFormatter;
 import javax.swing.JFormattedTextField;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 

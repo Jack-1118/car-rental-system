@@ -39,6 +39,7 @@ public class UserDAO {
 
     public static void clearSessionData() {
         FileUtil.clearSession(DATA_FILE_PATH_SESSION_DATA, Collections.emptyList());
+    }
 
     //get user by username
     public static User getUserByUsername(String username) {
@@ -61,5 +62,10 @@ public class UserDAO {
     public static void modifyUser(User user) {
         FileUtil.modifyRecord(DATA_FILE_PATH, User.class, u -> u.getUsername().equals(user.getUsername()), user );
 
+    }
+
+    public static boolean adminUsernameExists(String username) {
+        List<User> users = loadAdmins(); // Assuming this method returns all users
+        return users.stream().anyMatch(user -> user.getUsername().equalsIgnoreCase(username));
     }
 }

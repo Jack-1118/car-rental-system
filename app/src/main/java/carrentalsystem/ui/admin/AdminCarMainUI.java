@@ -348,7 +348,7 @@ public class AdminCarMainUI extends JPanel {
             if (carToDelete != null) {
                 // Confirm dialog, display all details
                 int response = JOptionPane.showConfirmDialog(
-                    SwingUtilities.getWindowAncestor(this),
+                    this,
                     "Are you sure you want to delete the car?\n" +
                     "ID: " + carToDelete.getCarID() + "\n" +
                     "Brand: " + carToDelete.getBrand() + "\n" +
