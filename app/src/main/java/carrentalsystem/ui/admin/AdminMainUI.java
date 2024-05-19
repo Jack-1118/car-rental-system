@@ -70,7 +70,7 @@ public class AdminMainUI extends JFrame implements ActionListener {
         if (source == carButton) {
             setMainPanel(new AdminCarMainUI());
         } else if (source == bookingButton) {
-            //TODO: setMainPanel(new AdminBookingMainUI());
+            setMainPanel(new AdminBookUI());
         } else if (source == customerButton) {
             setMainPanel(new AdminCustMainUI()); 
         } else if (source == reportButton) {
