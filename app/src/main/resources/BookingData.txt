@@ -6,5 +6,7 @@
 {"bookingID":6,"carID":5,"username":"JACK","startDate":"18-05-2024","endDate":"23-05-2024","status":"Cancelled","amount":600.0,"paymentStatus":"Pending Payment"}
 {"bookingID":7,"carID":5,"username":"JACK","startDate":"14-10-2024","endDate":"15-05-2029","status":"Approved","amount":167500.0,"paymentStatus":"Pending Payment"}
 {"bookingID":8,"carID":4,"username":"JACK","startDate":"19-05-2025","endDate":"30-05-2025","status":"Approved","amount":1200.0,"paymentStatus":"Pending Payment"}
-{"bookingID":9,"carID":8,"username":"JACK","startDate":"15-05-2029","endDate":"31-05-2030","status":"Pending Review","amount":382.0,"paymentStatus":"Pending Payment"}
-{"bookingID":10,"carID":10,"username":"JACK","startDate":"15-05-2040","endDate":"31-05-2040","status":"Pending Review","amount":204.0,"paymentStatus":"Pending Payment"}
+{"bookingID":9,"carID":8,"username":"JACK","startDate":"15-05-2029","endDate":"31-05-2030","status":"Rejected","amount":382.0,"paymentStatus":"Pending Payment"}
+{"bookingID":10,"carID":8,"username":"JACK","startDate":"15-05-2040","endDate":"31-05-2040","status":"Approved","amount":204.0,"paymentStatus":"Pending Payment"}
+{"bookingID":11,"carID":4,"username":"JACK","startDate":"12-05-2028","endDate":"14-05-2033","status":"Approved","amount":182900.0,"paymentStatus":"Pending Payment"}
+{"bookingID":12,"carID":3,"username":"JACK","startDate":"12-05-2028","endDate":"27-05-2028","status":"Approved","amount":1600.0,"paymentStatus":"Pending Payment"}

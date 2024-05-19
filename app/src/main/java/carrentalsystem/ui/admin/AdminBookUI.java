@@ -1,15 +1,13 @@
 package carrentalsystem.ui.admin;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-
 import carrentalsystem.dao.BookDAO;
-import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.Booking;
 import carrentalsystem.model.SharedData;
 
@@ -19,17 +17,18 @@ public class AdminBookUI extends JPanel{
      */
     public AdminBookUI() {
         initComponents();
+        populateTables();
     }
 
     public void populateTables() {
         List<Booking> bookings = BookDAO.loadBookings();
         LocalDate today = LocalDate.now();
         
-        PastBookings(bookings, today);
+        PastBookings(bookings);
         ReviewBookings(bookings, today);
     }
 
-    private void PastBookings(List<Booking> bookings, LocalDate today) {
+    private void PastBookings(List<Booking> bookings) {
         DefaultTableModel model = (DefaultTableModel) PastBookingTable.getModel();
         model.setRowCount(0);
 
@@ -65,18 +64,19 @@ public class AdminBookUI extends JPanel{
 
         for (Booking booking : bookings) {
                 try{
-                        LocalDate endDate = LocalDate.parse(booking.getEndDate(), formatter); // Convert String to LocalDate
+                        LocalDate startDate = LocalDate.parse(booking.getStartDate(), formatter); // Convert String to LocalDate
 
-                        if (endDate.isBefore(today) && booking.getStatus().equals("Under Review")) {
+                        if (startDate.isAfter(today) && booking.getStatus().equals("Pending Review")) {
                                 hasBooking = true;
                                 model.addRow(new Object[]{
-                                        booking.getBookingID(),
-                                        booking.getCarID(),
-                                        booking.getStartDate(),
-                                        booking.getEndDate(),
-                                        booking.getStatus(),
-                                        booking.getAmount(),
-                                        booking.getPaymentStatus()
+                                    booking.getBookingID(),
+                                    booking.getCarID(),
+                                    booking.getUsername(),
+                                    booking.getStartDate(),
+                                    booking.getEndDate(),
+                                    booking.getStatus(),
+                                    booking.getAmount(),
+                                    booking.getPaymentStatus()
                                 });
                                 }
                         }catch (DateTimeParseException e) {
@@ -85,41 +85,62 @@ public class AdminBookUI extends JPanel{
                         }
                 }
                 if (!hasBooking) {
-                        model.addRow(new Object[]{"no booking", "no booking", "no booking", "no booking", "no booking", "no booking", "no booking"});
+                        model.addRow(new Object[]{"no booking", "no booking", "no booking", "no booking", "no booking", "no booking", "no booking", "no booking"});
                 }
 
     }
 
     private void ViewBookingDetail() {
         int selectedRow = PastBookingTable.getSelectedRow();
+    
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select an Upcoming booking to view details", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
+        if (selectedRow == 0 && PastBookingTable.getValueAt(PastBookingTable.getSelectedRow(), 0).equals("no booking")) {
+            JOptionPane.showMessageDialog(null, "No Upcoming booking to view details", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
+        int bookingID = (Integer) PastBookingTable.getValueAt(selectedRow, 0);
+        int carID = (Integer) PastBookingTable.getValueAt(selectedRow, 1);
+    
+        SharedData.setBookingId(bookingID);
+        SharedData.setCarId(carID);
+    
+        // Ensure this UI is properly initialized
+        AdminViewBookingDetailUI admin = new AdminViewBookingDetailUI();
+        admin.setVisible(true);
+    
+    
+        // Optionally, dispose or hide the previous window if it is no longer needed
+    }
+    
+    private void ReviewBookingDetail() {
+        int selectedRow = UnderReviewBooking.getSelectedRow();
 
         if (selectedRow == -1) {
-                JOptionPane.showMessageDialog(null,"Please select an Upcoming booking to view details", "Error",
+                JOptionPane.showMessageDialog(null,"Please select a booking to review", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                 return;
         }
 
-        if(selectedRow == 0 && PastBookingTable.getValueAt(PastBookingTable.getSelectedRow(), 0).equals("no booking")){
+        if(selectedRow == 0 && UnderReviewBooking.getValueAt(UnderReviewBooking.getSelectedRow(), 0).equals("no booking")){
                 JOptionPane.showMessageDialog(null,
-                                "No Upcoming booking to view details", "Error",
+                                "No booking to review", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                 return;
         }
 
-        int bookingID = ((Integer) PastBookingTable.getValueAt(PastBookingTable.getSelectedRow(), 0));
-        int carID = ((Integer) PastBookingTable.getValueAt(PastBookingTable.getSelectedRow(), 1));
+        int bookingID = ((Integer) UnderReviewBooking.getValueAt(UnderReviewBooking.getSelectedRow(), 0));
+        int carID = ((Integer) UnderReviewBooking.getValueAt(UnderReviewBooking.getSelectedRow(), 1));
 
         SharedData.setBookingId(bookingID);
         SharedData.setCarId(carID);
 
-        AdminViewBookingDetailUI viewBookingDetail = new AdminViewBookingDetailUI();
-        viewBookingDetail.setVisible(true);
-    
-
-
-    }
-
-    private void ReviewBookingDetail() {
+        AdminReviewBooking AdminReviewBooking = new AdminReviewBooking();
+        AdminReviewBooking.setVisible(true);
         
     }
 
@@ -248,15 +269,11 @@ public class AdminBookUI extends JPanel{
 
         UnderReviewBooking.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
             },
             new String [] {
                 "Booking ID", "Car ID", "Username", "Start Date", "End Date", "Status", "Amount", "Payment Status"
             }
-        ) {
+        ){
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
             };
@@ -265,6 +282,11 @@ public class AdminBookUI extends JPanel{
                 return canEdit [columnIndex];
             }
         });
+        UnderReviewBooking.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        UnderReviewBooking.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        UnderReviewBooking.setShowHorizontalLines(true);
+        UnderReviewBooking.setShowVerticalLines(true);
+        UnderReviewBooking.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(UnderReviewBooking);
 
         javax.swing.GroupLayout panel4Layout = new javax.swing.GroupLayout(panel4);

@@ -8,127 +8,128 @@ import carrentalsystem.model.Booking;
 import carrentalsystem.model.Car;
 import carrentalsystem.model.SharedData;
 import carrentalsystem.model.User;
-import carrentalsystem.ui.user.UserBookingHistoryUI;
 
-public class AdminViewBookingDetailUI extends javax.swing.JFrame{
-    
-   
 
+public class AdminViewBookingDetailUI extends javax.swing.JFrame {
     private int currentBookingId; // Unset state is -1
     private int currentCarId; // Unset state is -1
 
+    /**
+     * Creates new form AdminViewBookingDetailUI
+     */
+    public AdminViewBookingDetailUI() {
+        this.currentBookingId = SharedData.getBookingId();
+        this.currentCarId = SharedData.getCarId();
 
-/**
-    * Creates new form UserPaymentUI
-    */
-public AdminViewBookingDetailUI() {
-            this.currentBookingId = SharedData.getBookingId();
-            this.currentCarId = SharedData.getCarId();
+        // Now call initComponents which might use currentBookingId and currentCarId
+        initComponents();
+        renderBookingData();
 
-            // Now call initComponents which might use currentBookingId and currentCarId
-            initComponents();
-            renderBookingData();
+        // Test
+        System.out.println("Current Booking ID: " + currentBookingId);
+        System.out.println("Current Car ID: " + currentCarId);
 
-            // Test
-            System.out.println("Current Booking ID: " + currentBookingId);
-            System.out.println("Current Car ID: " + currentCarId);
-}
-
-
-private void renderBookingData(){
-    String CarBrand = null;
-    String CarModel = null;
-    String CarYear = null;
-    String CarColour = null;
-    String SeatCapacity = null;
-    String FuelType = null;
-    String Transmission = null;
-    String RentalRate = null;
-    String RentalLocation = null;
-    double CarRentalRate = 0.0;
-
-    List<Car> carList = CarDAO.loadCars();
-    for (Car car : carList) {
-        if (car.getCarID() == currentCarId) {
-            CarBrand = (car.getBrand());
-            CarModel = (car.getModel());
-            CarYear = Integer.toString(car.getYear());
-            CarColour = (car.getColour());
-            SeatCapacity = (Integer.toString(car.getSeatCapacity()));
-            FuelType = (car.getFuelType());
-            Transmission = (car.getTransmission());
-            RentalRate = (Double.toString(car.getRentalRate()));
-            CarRentalRate = car.getRentalRate();
-            RentalLocation = (car.getRentalLocation());
-        }
     }
 
-    CarBrandField.setText(CarBrand);
-    CarModelField.setText(CarModel);
-    CarYearField.setText(CarYear);
-    CarColourField.setText(CarColour);
-    SeatCapacityField.setText(SeatCapacity);
-    FuelTypeField.setText(FuelType);
-    TransmissionField.setText(Transmission);
-    RentalRateField.setText(RentalRate);
-    RentalLocationField.setText(RentalLocation);
-
-    String StartingDate = null;
-    String EndingDate = null;
-    Double TotalAmount = 0.0;
-    String PaymentStatus = null;
-    String BookingStatus = null;
-    String Username = null;
-
-    RentalLocationLabel.setText("Rental Location");
-
-    List<Booking> bookingList = BookDAO.loadBookings();
-    for (Booking booking : bookingList) {
-        if (booking.getBookingID() == currentBookingId) {
-            StartingDate = (booking.getStartDate());
-            EndingDate = (booking.getEndDate());
-            TotalAmount = (booking.getAmount());
-            PaymentStatus = (booking.getPaymentStatus());
-            BookingStatus = (booking.getStatus());
-            Username = (booking.getUsername());
-        }
-    }
-
-    StartingDateField.setText(StartingDate);
-    EndingDateField.setText(EndingDate);
-    PaymentStatusField.setText(PaymentStatus);
-    BookingStatusField.setText(BookingStatus);
-
+    private void renderBookingData(){
+        String CarBrand = null;
+        String CarModel = null;
+        String CarYear = null;
+        String CarColour = null;
+        String SeatCapacity = null;
+        String FuelType = null;
+        String Transmission = null;
+        String RentalRate = null;
+        String RentalLocation = null;
+        double CarRentalRate = 0.0;
     
-    BookingIDField.setText(Integer.toString(currentBookingId)); // Convert BookingID to a string  Integer.toString(currentBookingId)
-
-    System.out.println("nooking id inside ui" + currentBookingId);
-
-
-    int TotalDays = Double.valueOf(TotalAmount).intValue() / Double.valueOf(CarRentalRate).intValue();
-    ReceiptArea.setText(
-            "Car Rental Rate: " + CarRentalRate +
-                    "\n" +
-                    "Total Days: " + TotalDays +
-                    "\n" +
-                    "Total Amount: " + TotalAmount
-    );
-
-    
-    List<User> user = UserDAO.loadUsers();
-    for (User users : user){
-        if (users.getUsername().equals(Username)) {
-            UsernameField.setText(users.getUsername());
-            FullNameField.setText(users.getFullName());
-            GenderField.setText(users.getGender());
-            DateOfBirthField.setText(users.getDateOfBirth());
+        List<Car> carList = CarDAO.loadCars();
+        for (Car car : carList) {
+            if (car.getCarID() == currentCarId) {
+                CarBrand = (car.getBrand());
+                CarModel = (car.getModel());
+                CarYear = Integer.toString(car.getYear());
+                CarColour = (car.getColour());
+                SeatCapacity = (Integer.toString(car.getSeatCapacity()));
+                FuelType = (car.getFuelType());
+                Transmission = (car.getTransmission());
+                RentalRate = (Double.toString(car.getRentalRate()));
+                CarRentalRate = car.getRentalRate();
+                RentalLocation = (car.getRentalLocation());
+            }
         }
+    
+        CarBrandField.setText(CarBrand);
+        CarModelField.setText(CarModel);
+        CarYearField.setText(CarYear);
+        CarColourField.setText(CarColour);
+        SeatCapacityField.setText(SeatCapacity);
+        FuelTypeField.setText(FuelType);
+        TransmissionField.setText(Transmission);
+        RentalRateField.setText(RentalRate);
+        RentalLocationField.setText(RentalLocation);
+    
+        String StartingDate = null;
+        String EndingDate = null;
+        Double TotalAmount = 0.0;
+        String PaymentStatus = null;
+        String BookingStatus = null;
+        String Username = null;
+    
+        RentalLocationLabel.setText("Rental Location");
+    
+        List<Booking> bookingList = BookDAO.loadBookings();
+        for (Booking booking : bookingList) {
+            if (booking.getBookingID() == currentBookingId) {
+                StartingDate = (booking.getStartDate());
+                EndingDate = (booking.getEndDate());
+                TotalAmount = (booking.getAmount());
+                PaymentStatus = (booking.getPaymentStatus());
+                BookingStatus = (booking.getStatus());
+                Username = (booking.getUsername());
+            }
+        }
+    
+        StartingDateField.setText(StartingDate);
+        EndingDateField.setText(EndingDate);
+        PaymentStatusField.setText(PaymentStatus);
+        BookingStatusField.setText(BookingStatus);
+    
+        
+        BookingIDField.setText(Integer.toString(currentBookingId)); // Convert BookingID to a string  Integer.toString(currentBookingId)
+    
+        System.out.println("nooking id inside ui" + currentBookingId);
+    
+    
+        int TotalDays = Double.valueOf(TotalAmount).intValue() / Double.valueOf(CarRentalRate).intValue();
+        ReceiptArea.setText(
+                "Car Rental Rate: " + CarRentalRate +
+                        "\n" +
+                        "Total Days: " + TotalDays +
+                        "\n" +
+                        "Total Amount: " + TotalAmount
+        );
+    
+        
+        List<User> user = UserDAO.loadUsers();
+        for (User users : user){
+            if (users.getUsername().equals(Username)) {
+                UsernameField.setText(users.getUsername());
+                FullNameField.setText(users.getFullName());
+                GenderField.setText(users.getGender());
+                DateOfBirthField.setText(users.getDateOfBirth());
+            }
+        }
+    
+    
     }
 
-
-}
-
-@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
@@ -171,11 +172,12 @@ private void renderBookingData(){
         DateOfBirthField = new javax.swing.JTextField();
         ReceiptArea = new java.awt.TextArea();
         ReceiptLabel = new java.awt.Label();
-        PaymentStatusField = new javax.swing.JTextField();
+        BookingStatusLabel = new javax.swing.JLabel();
         BookingStatusField = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        BackButton = new javax.swing.JButton();
+        PaymentStatusLabel = new javax.swing.JLabel();
+        PaymentStatusField = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         BookingDetailLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         BookingDetailLabel.setText("Booking Details");
@@ -383,7 +385,7 @@ private void renderBookingData(){
                 .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RentalRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(RentalLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PersonalDetail.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -419,17 +421,17 @@ private void renderBookingData(){
         ReceiptLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         ReceiptLabel.setText("Receipt");
 
-        PaymentStatusField.setEditable(false);
-        PaymentStatusField.setText("PaymentStatus");
-        PaymentStatusField.setEnabled(false);
+        BookingStatusLabel.setText("Booking Status");
 
         BookingStatusField.setEditable(false);
-        BookingStatusField.setText("BookingStatus");
+        BookingStatusField.setText("BookingStatusField");
         BookingStatusField.setEnabled(false);
 
-        jLabel1.setText("Payment Status");
+        PaymentStatusLabel.setText("Payment Status");
 
-        jLabel2.setText("Booking Status");
+        PaymentStatusField.setEditable(false);
+        PaymentStatusField.setText("PaymentStatusField");
+        PaymentStatusField.setEnabled(false);
 
         javax.swing.GroupLayout panel3Layout = new javax.swing.GroupLayout(panel3);
         panel3.setLayout(panel3Layout);
@@ -443,7 +445,6 @@ private void renderBookingData(){
                     .addGroup(panel3Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(panel3Layout.createSequentialGroup()
                                     .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -457,10 +458,12 @@ private void renderBookingData(){
                                         .addComponent(FullNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(DateOfBirthLabel)
                                         .addComponent(DateOfBirthField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(ReceiptArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(PaymentStatusField)
-                                .addComponent(BookingStatusField))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(ReceiptArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(BookingStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PaymentStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(PaymentStatusField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                                .addComponent(BookingStatusField, javax.swing.GroupLayout.Alignment.LEADING)))))
                 .addGap(0, 23, Short.MAX_VALUE))
             .addGroup(panel3Layout.createSequentialGroup()
                 .addGap(126, 126, 126)
@@ -492,68 +495,93 @@ private void renderBookingData(){
                 .addComponent(ReceiptLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ReceiptArea, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addComponent(BookingStatusLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BookingStatusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PaymentStatusLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PaymentStatusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(2, 2, 2)
-                .addComponent(BookingStatusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        BackButton.setText("<Back");
-        BackButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BackButtonMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(BackButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
-                        .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(418, Short.MAX_VALUE)
+                .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(43, 43, 43)
+                    .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(413, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(BackButton)
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(58, 58, 58))
+                .addContainerGap()
+                .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
+
+        pack();
     }// </editor-fold>                        
 
     private void BookingIDFieldActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
     }                                              
 
-    private void BackButtonMouseClicked(java.awt.event.MouseEvent evt) {                                        
-        // TODO add your handling code here:
-    }                                       
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AdminViewBookingDetailUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AdminViewBookingDetailUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AdminViewBookingDetailUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AdminViewBookingDetailUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AdminViewBookingDetailUI().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JButton BackButton;
     private java.awt.Label BookingDetailLabel;
     private javax.swing.JTextField BookingIDField;
     private javax.swing.JLabel BookingIDLabel;
     private javax.swing.JTextField BookingStatusField;
+    private javax.swing.JTextField BookingStatusField1;
+    private javax.swing.JLabel BookingStatusLabel;
     private javax.swing.JTextField CarBrandField;
     private javax.swing.JLabel CarBrandLabel;
     private javax.swing.JTextField CarColourField;
@@ -573,7 +601,9 @@ private void renderBookingData(){
     private javax.swing.JLabel FullNameLabel;
     private javax.swing.JTextField GenderField;
     private javax.swing.JLabel GenderLabel;
+    private javax.swing.JLabel GenderLabel1;
     private javax.swing.JTextField PaymentStatusField;
+    private javax.swing.JLabel PaymentStatusLabel;
     private java.awt.Label PersonalDetail;
     private java.awt.TextArea ReceiptArea;
     private java.awt.Label ReceiptLabel;
@@ -589,9 +619,9 @@ private void renderBookingData(){
     private javax.swing.JLabel TransmissionLabel;
     private javax.swing.JTextField UsernameField;
     private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private java.awt.Panel panel2;
     private java.awt.Panel panel3;
+    private java.awt.Panel panel4;
     // End of variables declaration                   
 }

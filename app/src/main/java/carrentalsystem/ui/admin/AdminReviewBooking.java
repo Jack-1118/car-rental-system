@@ -1,14 +1,156 @@
 package carrentalsystem.ui.admin;
 
-public class AdminReviewBooking extends javax.swing.JFrame{
-     /**
-     * Creates new form AdminViewBookingDetails
+import java.util.List;
+
+import carrentalsystem.dao.BookDAO;
+import carrentalsystem.dao.CarDAO;
+import carrentalsystem.dao.UserDAO;
+import carrentalsystem.model.Booking;
+import carrentalsystem.model.Car;
+import carrentalsystem.model.SharedData;
+import carrentalsystem.model.User;
+import javax.swing.JOptionPane;
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+
+
+/**
+ *
+ * @author theke
+ */
+public class AdminReviewBooking extends javax.swing.JFrame {
+    private int currentBookingId; // Unset state is -1
+    private int currentCarId; // Unset state is -1
+
+    /**
+     * Creates new form AdminReviewBooking
      */
     public AdminReviewBooking() {
+        this.currentBookingId = SharedData.getBookingId();
+        this.currentCarId = SharedData.getCarId();
         initComponents();
+
+        renderBookingData();
     }
 
-     /**
+    private void renderBookingData(){
+        String CarBrand = null;
+        String CarModel = null;
+        String CarYear = null;
+        String CarColour = null;
+        String SeatCapacity = null;
+        String FuelType = null;
+        String Transmission = null;
+        String RentalRate = null;
+        String RentalLocation = null;
+        double CarRentalRate = 0.0;
+
+        List<Car> carList = CarDAO.loadCars();
+        for (Car car : carList) {
+            if (car.getCarID() == currentCarId) {
+                CarBrand = (car.getBrand());
+                CarModel = (car.getModel());
+                CarYear = Integer.toString(car.getYear());
+                CarColour = (car.getColour());
+                SeatCapacity = (Integer.toString(car.getSeatCapacity()));
+                FuelType = (car.getFuelType());
+                Transmission = (car.getTransmission());
+                RentalRate = (Double.toString(car.getRentalRate()));
+                CarRentalRate = car.getRentalRate();
+                RentalLocation = (car.getRentalLocation());
+            }
+        }
+
+        CarBrandField.setText(CarBrand);
+        CarModelField.setText(CarModel);
+        CarYearField.setText(CarYear);
+        CarColourField.setText(CarColour);
+        SeatCapacityField.setText(SeatCapacity);
+        FuelTypeField.setText(FuelType);
+        TransmissionField.setText(Transmission);
+        RentalRateField.setText(RentalRate);
+        RentalLocationField.setText(RentalLocation);
+
+        String StartingDate = null;
+        String EndingDate = null;
+        Double TotalAmount = 0.0;
+        String Username = null;
+
+        RentalLocationLabel.setText("Rental Location");
+
+        List<Booking> bookingList = BookDAO.loadBookings();
+        for (Booking booking : bookingList) {
+            if (booking.getBookingID() == currentBookingId) {
+                StartingDate = (booking.getStartDate());
+                EndingDate = (booking.getEndDate());
+                TotalAmount = (booking.getAmount());
+                Username = (booking.getUsername());
+            }
+        }
+
+        StartingDateField.setText(StartingDate);
+        EndingDateField.setText(EndingDate);
+        
+
+        
+        BookingIDField.setText(Integer.toString(currentBookingId)); // Convert BookingID to a string  Integer.toString(currentBookingId)
+
+        System.out.println("nooking id inside ui" + currentBookingId);
+
+
+        int TotalDays = Double.valueOf(TotalAmount).intValue() / Double.valueOf(CarRentalRate).intValue();
+        ReceiptArea.setText(
+                "Car Rental Rate: " + CarRentalRate +
+                        "\n" +
+                        "Total Days: " + TotalDays +
+                        "\n" +
+                        "Total Amount: " + TotalAmount
+        );
+
+        
+        List<User> user = UserDAO.loadUsers();
+        for (User users : user){
+            if (users.getUsername().equals(Username)) {
+                UsernameField.setText(users.getUsername());
+                FullNameField.setText(users.getFullName());
+                GenderField.setText(users.getGender());
+                DateOfBirthField.setText(users.getDateOfBirth());
+            }
+        }
+  
+
+    }
+
+    private void ApproveBooking(){
+        List<Booking> bookingList = BookDAO.loadBookings();
+        for (Booking booking : bookingList) {
+            if (booking.getBookingID() == currentBookingId) {
+                booking.setStatus("Approved");
+                BookDAO.modifyBooking(booking);
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Booking Approved Successfully");
+        dispose();
+    }
+
+    private void RejectBooking(){
+        List<Booking> bookingList = BookDAO.loadBookings();
+        for (Booking booking : bookingList) {
+            if (booking.getBookingID() == currentBookingId) {
+                booking.setStatus("Rejected");
+                BookDAO.modifyBooking(booking);
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Booking Rejected Successfully");
+        dispose();
+    }
+
+
+
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -59,7 +201,8 @@ public class AdminReviewBooking extends javax.swing.JFrame{
         jLabel2 = new javax.swing.JLabel();
         ApproveButton = new javax.swing.JButton();
         RejectButton = new javax.swing.JButton();
-        BackButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         BookingDetailLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         BookingDetailLabel.setText("Booking Details");
@@ -267,7 +410,7 @@ public class AdminReviewBooking extends javax.swing.JFrame{
                 .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RentalRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(RentalLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PersonalDetail.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -390,62 +533,87 @@ public class AdminReviewBooking extends javax.swing.JFrame{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        BackButton.setText("<Back");
-        BackButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BackButtonMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(BackButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
-                        .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(435, Short.MAX_VALUE)
+                .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(43, 43, 43)
+                    .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(432, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(BackButton)
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(58, 58, 58))
+                .addContainerGap()
+                .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
+
+        pack();
     }// </editor-fold>                        
 
     private void BookingIDFieldActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
     }                                              
 
-    private void BackButtonMouseClicked(java.awt.event.MouseEvent evt) {                                        
-        // TODO add your handling code here:
-    }                                       
-
     private void ApproveButtonMouseClicked(java.awt.event.MouseEvent evt) {                                           
         // TODO add your handling code here:
+        ApproveBooking();
     }                                          
 
     private void RejectButtonMouseClicked(java.awt.event.MouseEvent evt) {                                          
         // TODO add your handling code here:
+        RejectBooking();
     }                                         
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AdminReviewBooking.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AdminReviewBooking.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AdminReviewBooking.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AdminReviewBooking.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AdminReviewBooking().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton ApproveButton;
-    private javax.swing.JButton BackButton;
     private java.awt.Label BookingDetailLabel;
     private javax.swing.JTextField BookingIDField;
     private javax.swing.JLabel BookingIDLabel;
