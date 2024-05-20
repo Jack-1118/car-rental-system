@@ -37,7 +37,7 @@ public class AdminReportMainUI extends JPanel {
             cbPeriod.addItem(String.valueOf(i));
         }
 
-        cbReportType = new JComboBox<>(new String[]{"Most Rented Car", "Revenue Generated", "Peak Rental Period", "Utilization Rate"});
+        cbReportType = new JComboBox<>(new String[]{"Most Rented Car", "Revenue Generated"});
         btnGenerate = new JButton("Generate Report");
 
         
@@ -119,12 +119,6 @@ public class AdminReportMainUI extends JPanel {
                         .sum();
                     dataset.addValue(totalRevenue, "Revenue", "Total Revenue");
                 }
-                break;
-            case "Peak Rental Period":
-                // Implement logic to identify peak rental periods within the selected year
-                break;
-            case "Utilization Rate":
-                // Implement logic to calculate the utilization rate
                 break;
         }
 
