@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Collections;
 
 import carrentalsystem.model.Booking;
-import carrentalsystem.model.Car;
 import carrentalsystem.model.User;
 import carrentalsystem.util.FileUtil;
 
