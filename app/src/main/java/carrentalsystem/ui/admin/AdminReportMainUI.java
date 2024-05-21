@@ -31,7 +31,7 @@ public class AdminReportMainUI extends JPanel {
 
     private void initializeUI() {
         cbPeriod = new JComboBox<>();
-        int startYear = 2023; // Define the starting year
+        int startYear = 2023; 
         int currentYear = LocalDate.now().getYear();
         for (int i = startYear; i <= currentYear; i++) {
             cbPeriod.addItem(String.valueOf(i));
@@ -130,7 +130,7 @@ public class AdminReportMainUI extends JPanel {
     private void updateChart(JFreeChart chart) {
         ChartPanel chartPanel = new ChartPanel(chart);
         if (this.getComponentCount() > 1) {
-            this.remove(1); // Remove previous chart
+            this.remove(1); 
         }
         this.add(chartPanel, BorderLayout.CENTER);
         this.validate();

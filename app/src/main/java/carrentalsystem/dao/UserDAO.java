@@ -3,6 +3,7 @@ package carrentalsystem.dao;
 import java.util.List;
 import java.util.Collections;
 
+import carrentalsystem.model.Booking;
 import carrentalsystem.model.Car;
 import carrentalsystem.model.User;
 import carrentalsystem.util.FileUtil;
@@ -12,6 +13,7 @@ public class UserDAO {
     private static final String DATA_FILE_PATH = "app/src/main/resources/UserData.txt";
     private static final String DATA_FILE_PATH_ADMIN = "app/src/main/resources/AdminData.txt";
     private static final String DATA_FILE_PATH_SESSION_DATA = "app/src/main/resources/SessionData.txt";
+    private static final String BOOKING_FILE_PATH = "app/src/main/resources/BookingData.txt";
 
     public static void saveUser(User user) {
         FileUtil.saveFile(DATA_FILE_PATH, Collections.singletonList(user));
@@ -56,6 +58,7 @@ public class UserDAO {
     //delete user by username
     public static void deleteUser(String username) {
         FileUtil.deleteRecord(DATA_FILE_PATH, User.class, u -> u.getUsername().equals(username));
+        FileUtil.deleteRecord(BOOKING_FILE_PATH, Booking.class, u -> u.getUsername().equals(username));
     }
 
     // modify the user in the data file
@@ -64,8 +67,10 @@ public class UserDAO {
 
     }
 
-    public static boolean adminUsernameExists(String username) {
+    public static boolean usernameExists(String username) {
         List<User> users = loadAdmins(); // Assuming this method returns all users
+        List<User> userss = loadUsers();
+        users.addAll(userss);
         return users.stream().anyMatch(user -> user.getUsername().equalsIgnoreCase(username));
     }
 }

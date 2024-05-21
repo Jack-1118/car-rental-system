@@ -9,12 +9,14 @@ import java.util.Comparator;
 
 import carrentalsystem.model.Car;
 import carrentalsystem.util.FileUtil;
+import carrentalsystem.model.Booking;
 
 
 public class CarDAO {
 
     // file path for the data file
     private static final String DATA_FILE_PATH = "app/src/main/resources/CarData.txt";
+    private static final String BOOKING_FILE_PATH = "app/src/main/resources/BookingData.txt";
 
     // Save a single car to the data file
     public static void saveCar(Car car) {
@@ -56,5 +58,6 @@ public class CarDAO {
     // delete the car in the data file
     public static void deleteCar(Car car) {
         FileUtil.deleteRecord(DATA_FILE_PATH, Car.class, c -> c.getCarID() == car.getCarID());
+        FileUtil.deleteRecord(BOOKING_FILE_PATH, Booking.class, c -> c.getCarID() == car.getCarID());
     }
 }

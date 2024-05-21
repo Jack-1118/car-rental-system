@@ -74,9 +74,7 @@ public class FileUtil {
         // Save the modified list back to the file
         saveFile(filePath, allData);
     }
-
-
-    
+   
     // Modify a record in the file
     public static <T> void modifyRecord(String filePath, Class<T> type, Predicate<T> predicate, T newObject) {
         List<T> allData = loadFile(filePath, type);
