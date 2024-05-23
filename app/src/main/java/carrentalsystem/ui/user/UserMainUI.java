@@ -80,17 +80,14 @@ public class UserMainUI extends BasePanel {
                 Date startDate = StartDate.getDate();
                 Date endDate = EndDate.getDate();
                 int selectedRow = BookingTable.getSelectedRow();
-                int carID = ((Integer) BookingTable.getValueAt(BookingTable.getSelectedRow(), 0)).intValue();
-                System.out.println("Selected Car: " + carID);
+                
+                
 
                 // Check if the user has selected a car and all fields are filled
                 if (startDate == null || endDate == null || selectedRow == -1) {
                         JOptionPane.showMessageDialog(null, "Please Field all Selection.");
                         return;
-                } else if (selectedRow == -1) {
-                        JOptionPane.showMessageDialog(null, "Please Select a Car.");
-                        return;
-                }
+                } 
 
                 // Validate the date range
                 if (endDate.before(startDate)) {
@@ -100,8 +97,10 @@ public class UserMainUI extends BasePanel {
                 }
                 calculateDay(startDate, endDate);
                 System.out.println("Days: " + calculateDay(startDate, endDate));
-
+                int carID = ((Integer) BookingTable.getValueAt(BookingTable.getSelectedRow(), 0)).intValue();
+                        System.out.println("Selected Car: " + carID);
                 try {
+                        
                         List<Booking> bookingList = BookDAO.loadBookings();
                         for (Booking booking : bookingList) {
                                 if (booking.getCarID() == carID) {
