@@ -86,6 +86,8 @@ public class RegisterUI extends javax.swing.JFrame {
             String formattedDate = sdf.format(dob); // Format date to string
 
             User newUser = new User(username, password, fullName, gender, formattedDate);
+            
+            
             UserDAO.saveUser(newUser);
             JOptionPane.showMessageDialog(null, "Registration Successful!");
             LoginUI login = new LoginUI();

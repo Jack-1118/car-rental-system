@@ -142,8 +142,9 @@ public class UserMainUI extends BasePanel {
                         String username = UserDAO.loadSessionData().get(0).getUsername();
                         int bookingID = BookDAO.assignBookingID();
 
-                        Booking newBooking = new Booking(bookingID, carID, username, formattedStartDate,
-                                        formattedEndDate, status, amount, paymentStatus);
+                        Booking newBooking = new Booking(bookingID, carID, username, formattedStartDate,formattedEndDate, status, amount, paymentStatus);
+                        
+                        
                         BookDAO.saveBook(newBooking);
 
                         StartDate.setDate(null);
@@ -265,7 +266,7 @@ public class UserMainUI extends BasePanel {
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                 setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-                setResizable(false);
+                // setResizable(false);
 
                 RentalStoreNameLabel.setAlignment(java.awt.Label.CENTER);
                 RentalStoreNameLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
