@@ -137,7 +137,7 @@ public class AdminCarMainUI extends JPanel {
         // Panel to hold the form fields
         JPanel formPanel = new JPanel(new GridLayout(0, 2)); // 0 rows, 2 columns. Rows increase dynamically
 
-        // Create labels and text fields for car information
+
         JTextField brandField = new JTextField(20);
         JTextField modelField = new JTextField(20);
         JFormattedTextField yearField = FormUtil.createIntegerField(3000);
@@ -180,7 +180,6 @@ public class AdminCarMainUI extends JPanel {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Validate and create car object
                 Car car = new Car();
                 car.setCarID(CarDAO.assignCarID());
                 car.setBrand(brandField.getText());
@@ -220,7 +219,7 @@ public class AdminCarMainUI extends JPanel {
         dialog.add(formPanel, BorderLayout.CENTER);
         dialog.add(buttonPanel, BorderLayout.PAGE_END);
 
-        // Prepare and show the dialog
+
         dialog.pack();
         dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
@@ -323,7 +322,7 @@ public class AdminCarMainUI extends JPanel {
                 dialog.add(formPanel, BorderLayout.CENTER);
                 dialog.add(buttonPanel, BorderLayout.PAGE_END);
     
-                // Show the dialog
+
                 dialog.pack();
                 dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(this));
                 dialog.setVisible(true);

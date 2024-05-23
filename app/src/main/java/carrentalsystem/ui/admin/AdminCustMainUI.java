@@ -6,12 +6,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-
+import carrentalsystem.dao.BookDAO;
 import carrentalsystem.dao.UserDAO;
+import carrentalsystem.model.Booking;
 import carrentalsystem.model.User;
 
 public class AdminCustMainUI extends JPanel {
-    private JButton  viewButton, deleteButton, historyButton;
+    private JButton deleteButton, historyButton;
     private JTable customerTable;
     private JScrollPane scrollPane;
 
@@ -63,7 +64,7 @@ public class AdminCustMainUI extends JPanel {
 
     private void setupListeners() {
         deleteButton.addActionListener(e -> deleteSelectedCustomer());
-        // historyButton.addActionListener(e -> viewCustomerHistory());
+        historyButton.addActionListener(e -> viewCustomerHistory());
     }
 
 
@@ -103,15 +104,32 @@ public class AdminCustMainUI extends JPanel {
         customerTable.setModel(model);
     }
 
-    // TODO:private void viewCustomerHistory() {
-    //     int selectedRow = customerTable.getSelectedRow();
-    //     if (selectedRow >= 0) {
-    //         int customerId = (Integer) customerTable.getValueAt(selectedRow, 0);
-    //         // Assuming a method to fetch and display booking history
-    //         String history = CustomerDAO.getBookingHistory(customerId);
-    //         JOptionPane.showMessageDialog(this, "Booking History: " + history);
-    //     } else {
-    //         JOptionPane.showMessageDialog(this, "No customer selected.", "Error", JOptionPane.ERROR_MESSAGE);
-    //     }
-    // }
+    private void viewCustomerHistory() {
+        int selectedRow = customerTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            String username = (String) customerTable.getValueAt(selectedRow, 0);
+            List<Booking> bookings = BookDAO.loadBookingsByUserId(username);
+
+            if (bookings.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No booking history for the selected user.", "No History", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JTable bookingTable = new JTable();
+                DefaultTableModel model = new DefaultTableModel();
+                model.setColumnIdentifiers(new String[]{"Booking ID", "Car ID", "Start Date", "End Date", "Status", "Amount", "Payment Status"});
+
+                for (Booking booking : bookings) {
+                    model.addRow(new Object[]{booking.getBookingID(), booking.getCarID(), booking.getStartDate(), booking.getEndDate(), booking.getStatus(), booking.getAmount(), booking.getPaymentStatus()});
+                }
+
+                bookingTable.setModel(model);
+                JScrollPane scrollPane = new JScrollPane(bookingTable);
+                scrollPane.setPreferredSize(new Dimension(700, 150));
+
+                // Display in a dialog
+                JOptionPane.showMessageDialog(null, scrollPane, "Booking History for " + username, JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No customer selected.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

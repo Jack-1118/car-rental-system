@@ -16,10 +16,8 @@ import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import carrentalsystem.dao.UserDAO;
 import carrentalsystem.model.User;
-import java.util.List; // Add missing import statement
 public class RegisterUI extends javax.swing.JFrame {
 
     /**
@@ -57,12 +55,16 @@ public class RegisterUI extends javax.swing.JFrame {
             
 
             // Check if the username is already taken
-            List<User> users = UserDAO.loadUsers();
-                for (User user : users) {
-                    if (user.getUsername().equals(username)) {
-                        JOptionPane.showMessageDialog(null, "Username have been taken. Please try another one.");
-                        return;
-                    }
+            // List<User> users = UserDAO.loadUsers();
+            //     for (User user : users) {
+            //         if (user.getUsername().equals(username)) {
+            //             JOptionPane.showMessageDialog(null, "Username have been taken. Please try another one.");
+            //             return;
+            //         }
+            // }
+            if (UserDAO.usernameExists(username)) {
+                JOptionPane.showMessageDialog(null, "Username already exists. Please try another one.");
+                return;
             }
 
             // Validate password
@@ -88,6 +90,9 @@ public class RegisterUI extends javax.swing.JFrame {
             
             UserDAO.saveUser(newUser);
             JOptionPane.showMessageDialog(null, "Registration Successful!");
+            LoginUI login = new LoginUI();
+            login.setVisible(true);
+            RegisterUI.this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Registration failed. Please try again.");
             e.printStackTrace();

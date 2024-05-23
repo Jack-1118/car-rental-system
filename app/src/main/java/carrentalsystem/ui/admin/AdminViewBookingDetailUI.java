@@ -580,7 +580,6 @@ public class AdminViewBookingDetailUI extends javax.swing.JFrame {
     private javax.swing.JTextField BookingIDField;
     private javax.swing.JLabel BookingIDLabel;
     private javax.swing.JTextField BookingStatusField;
-    private javax.swing.JTextField BookingStatusField1;
     private javax.swing.JLabel BookingStatusLabel;
     private javax.swing.JTextField CarBrandField;
     private javax.swing.JLabel CarBrandLabel;
@@ -601,7 +600,6 @@ public class AdminViewBookingDetailUI extends javax.swing.JFrame {
     private javax.swing.JLabel FullNameLabel;
     private javax.swing.JTextField GenderField;
     private javax.swing.JLabel GenderLabel;
-    private javax.swing.JLabel GenderLabel1;
     private javax.swing.JTextField PaymentStatusField;
     private javax.swing.JLabel PaymentStatusLabel;
     private java.awt.Label PersonalDetail;
@@ -619,9 +617,7 @@ public class AdminViewBookingDetailUI extends javax.swing.JFrame {
     private javax.swing.JLabel TransmissionLabel;
     private javax.swing.JTextField UsernameField;
     private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JLabel jLabel3;
     private java.awt.Panel panel2;
     private java.awt.Panel panel3;
-    private java.awt.Panel panel4;
     // End of variables declaration                   
 }

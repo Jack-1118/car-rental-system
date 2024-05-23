@@ -31,13 +31,13 @@ public class AdminReportMainUI extends JPanel {
 
     private void initializeUI() {
         cbPeriod = new JComboBox<>();
-        int startYear = 2023; // Define the starting year
+        int startYear = 2023; 
         int currentYear = LocalDate.now().getYear();
         for (int i = startYear; i <= currentYear; i++) {
             cbPeriod.addItem(String.valueOf(i));
         }
 
-        cbReportType = new JComboBox<>(new String[]{"Most Rented Car", "Revenue Generated", "Peak Rental Period", "Utilization Rate"});
+        cbReportType = new JComboBox<>(new String[]{"Most Rented Car", "Revenue Generated"});
         btnGenerate = new JButton("Generate Report");
 
         
@@ -120,12 +120,6 @@ public class AdminReportMainUI extends JPanel {
                     dataset.addValue(totalRevenue, "Revenue", "Total Revenue");
                 }
                 break;
-            case "Peak Rental Period":
-                // Implement logic to identify peak rental periods within the selected year
-                break;
-            case "Utilization Rate":
-                // Implement logic to calculate the utilization rate
-                break;
         }
 
         return dataset;
@@ -136,7 +130,7 @@ public class AdminReportMainUI extends JPanel {
     private void updateChart(JFreeChart chart) {
         ChartPanel chartPanel = new ChartPanel(chart);
         if (this.getComponentCount() > 1) {
-            this.remove(1); // Remove previous chart
+            this.remove(1); 
         }
         this.add(chartPanel, BorderLayout.CENTER);
         this.validate();

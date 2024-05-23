@@ -53,12 +53,12 @@ public class AdminMainUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    // Helper method to create and style sidebar buttons
+    // Create and style sidebar buttons
     private JButton createSidebarButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setBackground(Color.LIGHT_GRAY);
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.BLACK);
         button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height));
         button.addActionListener(this);
         return button;

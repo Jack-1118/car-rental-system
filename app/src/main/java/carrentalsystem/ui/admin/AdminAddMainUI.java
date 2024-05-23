@@ -97,7 +97,7 @@ public class AdminAddMainUI extends JPanel {
         }
     
         // Check if the username already exists
-        if (UserDAO.adminUsernameExists(username)) {
+        if (UserDAO.usernameExists(username)) {
             JOptionPane.showMessageDialog(this, "Username already exists. Please try another one.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -106,13 +106,13 @@ public class AdminAddMainUI extends JPanel {
         String formattedDate = sdf.format(dob);
     
         User newUser = new User();
-        newUser.setUsername(username);
+        newUser.setUsername(username.toUpperCase());
         newUser.setPassword(password);
         newUser.setFullName(fullName);
         newUser.setGender(gender);
         newUser.setDateOfBirth(formattedDate);
     
-        UserDAO.saveAdmin(newUser);  // Assuming this method exists and saves the user correctly
+        UserDAO.saveAdmin(newUser);  
         JOptionPane.showMessageDialog(this, "Admin added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 }
