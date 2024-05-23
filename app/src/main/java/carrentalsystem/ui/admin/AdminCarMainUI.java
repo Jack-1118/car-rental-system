@@ -19,7 +19,7 @@ import carrentalsystem.util.FormUtil;
 
 
 public class AdminCarMainUI extends JPanel {
-    private JButton addButton, editButton, deleteButton, refreshButton;
+    private JButton addButton, editButton, deleteButton;
     private JTable carTable;
     private JScrollPane scrollPane;
     private JTextField searchField;
@@ -53,13 +53,11 @@ public class AdminCarMainUI extends JPanel {
         addButton = new JButton("Add New Car");
         editButton = new JButton("View/Edit Selected Car");
         deleteButton = new JButton("Delete Selected Car");
-        refreshButton = new JButton("Refresh List");
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(refreshButton);
 
         buttonPanelWrapper = new JPanel(new BorderLayout());
         buttonPanelWrapper.add(buttonPanel, BorderLayout.NORTH);
@@ -123,7 +121,6 @@ public class AdminCarMainUI extends JPanel {
         addButton.addActionListener(e -> showAddCarDialog());
         editButton.addActionListener(e -> showEditCarDialog());
         deleteButton.addActionListener(e -> showDeleteCarDialog());
-        refreshButton.addActionListener(e -> refreshCarList());
     }
 
 
