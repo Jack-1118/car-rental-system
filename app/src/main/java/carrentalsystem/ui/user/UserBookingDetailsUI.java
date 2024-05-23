@@ -12,6 +12,7 @@ import carrentalsystem.model.Car;
 import carrentalsystem.model.SharedData;
 import carrentalsystem.model.User;
 import carrentalsystem.ui.BasePanel;
+import carrentalsystem.util.PdfUtil;
 
 public class UserBookingDetailsUI extends BasePanel{
     private int currentBookingId; // Unset state is -1
@@ -28,12 +29,12 @@ public class UserBookingDetailsUI extends BasePanel{
                 // Now call initComponents which might use currentBookingId and currentCarId
                 initComponents();
                 renderBookingData();
+                checkPaymentStatus();
 
                 // Test
                 System.out.println("Current Booking ID: " + currentBookingId);
                 System.out.println("Current Car ID: " + currentCarId);
     }
-
 
     private void renderBookingData(){
         String CarBrand = null;
@@ -133,6 +134,29 @@ public class UserBookingDetailsUI extends BasePanel{
         userBookingHistoryUI.setVisible(true);
         dispose();
     }
+    
+    private void checkPaymentStatus(){
+        String PaymentStatusCheck = "";
+        String BookingStatusCheck = "";
+
+        List<Booking> bookingList = BookDAO.loadBookings();
+        for (Booking booking : bookingList) {
+            if (booking.getBookingID() == currentBookingId) {
+                PaymentStatusCheck = (booking.getPaymentStatus());
+                BookingStatusCheck = (booking.getStatus());
+            }
+        }
+
+        if(PaymentStatusCheck.equals("Paid") && BookingStatusCheck.equals("Approved")){
+            PrintReceiptButton.setEnabled(true);
+        }
+
+    }
+    
+    private void generateReceipt(int currentBookingId){
+        Booking currentBooking = BookDAO.getBookingId(currentBookingId);
+        PdfUtil.generateReceipt(currentBooking);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -189,6 +213,7 @@ public class UserBookingDetailsUI extends BasePanel{
         ReceiptLabel = new java.awt.Label();
         PaymentPageLabel = new java.awt.Label();
         BackButton = new javax.swing.JButton();
+        PrintReceiptButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -465,6 +490,14 @@ public class UserBookingDetailsUI extends BasePanel{
         BookingStatusLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         BookingStatusLabel.setText("Booking Status");
 
+        PrintReceiptButton.setText("Print Receipt");
+        PrintReceiptButton.setEnabled(false);
+        PrintReceiptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PrintReceiptButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel3Layout = new javax.swing.GroupLayout(panel3);
         panel3.setLayout(panel3Layout);
         panel3Layout.setHorizontalGroup(
@@ -506,6 +539,7 @@ public class UserBookingDetailsUI extends BasePanel{
                 .addGap(88, 88, 88)
                 .addComponent(BookingStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(PrintReceiptButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panel3Layout.setVerticalGroup(
             panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,6 +572,7 @@ public class UserBookingDetailsUI extends BasePanel{
                 .addComponent(BookingStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BookingStatusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(PrintReceiptButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -641,6 +676,11 @@ public class UserBookingDetailsUI extends BasePanel{
         // TODO add your handling code here:
     }//GEN-LAST:event_BookingStatusFieldKeyPressed
 
+    private void PrintReceiptButtonMouseClicked(java.awt.event.MouseEvent evt) {                                                
+        // TODO add your handling code here:
+        generateReceipt(currentBookingId);
+    }//GEN-LAST:event_BookingStatusFieldKeyPressed
+
     private void BackButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackButtonMouseClicked
         // TODO add your handling code here:
         BackButton();
@@ -728,6 +768,7 @@ public class UserBookingDetailsUI extends BasePanel{
     private java.awt.Panel panel3;
     private java.awt.Panel panel4;
     private java.awt.TextArea ReceiptArea;
+    private javax.swing.JButton PrintReceiptButton;
     // End of variables declaration//GEN-END:variables
 }
 

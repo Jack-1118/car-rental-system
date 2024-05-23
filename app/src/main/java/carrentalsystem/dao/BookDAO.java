@@ -45,6 +45,16 @@ public class BookDAO {
         return bookings;
     }
 
+    // Load the bookings by booking ID
+    public static List<Booking> loadBookingsByBookingId(int bookingID) {
+        List<Booking> bookings = FileUtil.loadFile(DATA_FILE_PATH, Booking.class);
+        bookings = bookings.stream()
+                        .filter(booking -> bookingID == booking.getBookingID())
+                        .collect(Collectors.toList());
+        Collections.sort(bookings, Comparator.comparing(Booking::getBookingID));
+        return bookings;
+    }
+
     
     
     public static Booking getBookingId(int id) {
