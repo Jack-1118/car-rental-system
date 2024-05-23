@@ -34,6 +34,8 @@ dependencies {
     
     // JCommon library needed by JFreeChart
     implementation 'org.jfree:jcommon:1.0.24'
+
+    implementation 'com.itextpdf:itext7-core:7.1.9'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

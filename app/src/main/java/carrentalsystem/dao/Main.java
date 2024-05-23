@@ -1,17 +1,21 @@
 package carrentalsystem.dao;
 
 
-import carrentalsystem.model.Car;
+import carrentalsystem.model.Booking;
+import carrentalsystem.util.PdfUtil;
+
+import java.util.List;
 
 
 
 public class Main {
 
     public static void main(String[] args) {
-        Car car = new Car();
-        car = CarDAO.getCarById(2);
-        System.out.println(car.getCarID());
-
-        
+        List<Booking> bookings = BookDAO.loadBookings();
+        if (!bookings.isEmpty()) {
+            Booking firstBooking = bookings.get(0);
+            PdfUtil.generateReceipt(firstBooking);
+        }
+ 
     }
 }
