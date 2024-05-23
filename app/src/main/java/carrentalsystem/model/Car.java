@@ -16,15 +16,14 @@ package carrentalsystem.model;
 
 
         // rental information
-        private boolean available;
         private double rentalRate;
         private String rentalLocation;
 
 
-    // constructor
-    public Car() {
-        
-    }
+        // constructor
+        public Car() {
+            
+        }
 
 
     //getters
@@ -64,9 +63,6 @@ package carrentalsystem.model;
         return transmission;
     }
     
-    public boolean getAvailable() {
-        return available;
-    }
     
     public double getRentalRate() {
         return rentalRate;
@@ -115,9 +111,6 @@ package carrentalsystem.model;
         this.transmission = transmission;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
 
     public void setRentalRate(double rentalRate) {
         this.rentalRate = rentalRate;
