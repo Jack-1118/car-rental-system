@@ -94,7 +94,7 @@ public class AdminBookUI extends JPanel{
         int selectedRow = PastBookingTable.getSelectedRow();
     
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Please select an Upcoming booking to view details", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select a booking to view details", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
     
