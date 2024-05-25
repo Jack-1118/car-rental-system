@@ -359,10 +359,13 @@ public class UserMainUI extends BasePanel {
                 StartDateLabel.setText("Start Date");
                 StartDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
                 StartDate.setMinSelectableDate(dateThreeDaysLater);
+                StartDate.getDateEditor().setEnabled(false);
+                
 
                 EndDateLbel.setText("End Date");
                 EndDate.setMaxSelectableDate(new java.util.Date(253370739683000L));
                 EndDate.setMinSelectableDate(dateThreeDaysLater);
+                EndDate.getDateEditor().setEnabled(false);
 
                 ClearButton.setText("Clear");
                 ClearButton.addMouseListener(new java.awt.event.MouseAdapter() {
