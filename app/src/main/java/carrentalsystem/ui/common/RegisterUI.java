@@ -162,6 +162,7 @@ public class RegisterUI extends javax.swing.JFrame {
         label5.setText("Gender");
 
         DOBInput.setDateFormatString("dd-MM-yyyy");
+        DOBInput.getDateEditor().setEnabled(false);
 
         RegisterButton.setText("Register");
         RegisterButton.addMouseListener(new java.awt.event.MouseAdapter() {
