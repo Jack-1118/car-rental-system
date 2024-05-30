@@ -75,21 +75,21 @@ public class UserProfileUI extends BasePanel {
         String NewGender = jRadioButton1.isSelected() ? "Male" : "Female";
          
         
-       
-        
-        // ...
-        try {
-            // Validate the input values
-            if ( NewFullName.isEmpty() || NewPassword.isEmpty() || GenderButtonGroup.getSelection() == null) {
-                JOptionPane.showMessageDialog(null, "Please fill in all fields.");
-                return;
-            }
+       // Validate the input values
+       if ( NewFullName.isEmpty() || NewPassword.isEmpty() || GenderButtonGroup.getSelection() == null) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.");
+            return;
+        }
 
-            // Validate password
-            if (NewPassword.length() < 8) {
-                JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long");
-                return;
-            }
+        // Validate password
+        if (NewPassword.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long");
+            return;
+        }
+        
+        
+        try {
+            
             
 
             List<User> user = UserDAO.loadUsers();
