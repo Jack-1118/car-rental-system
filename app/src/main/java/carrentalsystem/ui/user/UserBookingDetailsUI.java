@@ -149,6 +149,11 @@ public class UserBookingDetailsUI extends BasePanel{
 
         if(PaymentStatusCheck.equals("Paid") && BookingStatusCheck.equals("Approved")){
             PrintReceiptButton.setEnabled(true);
+            PrintReceiptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    PrintReceiptButtonMouseClicked(evt);
+                }
+            });
         }
 
     }
@@ -492,11 +497,8 @@ public class UserBookingDetailsUI extends BasePanel{
 
         PrintReceiptButton.setText("Print Receipt");
         PrintReceiptButton.setEnabled(false);
-        PrintReceiptButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PrintReceiptButtonMouseClicked(evt);
-            }
-        });
+   
+        
 
         javax.swing.GroupLayout panel3Layout = new javax.swing.GroupLayout(panel3);
         panel3.setLayout(panel3Layout);

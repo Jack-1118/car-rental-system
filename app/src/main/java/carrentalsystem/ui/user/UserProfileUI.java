@@ -21,13 +21,39 @@ import javax.swing.JOptionPane;
  * @author theke
  */
 public class UserProfileUI extends BasePanel {
-    List<User> user = UserDAO.loadUsers();
+    List<User> users;
     /**
      * Creates new form UserProfileUI
      */
     public UserProfileUI() {
         initComponents();
         renderUserProfile();
+    }
+
+    private void loadUserData() {
+        users = UserDAO.loadUsers(); // Reload the user data from the database
+    }
+    
+
+    private void renderUserProfile() {
+        String Username = UserDAO.loadSessionData().get(0).getUsername();
+        loadUserData();
+        String Gender = "";
+        
+        for (User user : users){
+            if (user.getUsername().equals(Username)) {
+                UsernameField.setText(user.getUsername());
+                NewPasswordField.setText(user.getPassword());
+                NewFullNameField.setText(user.getFullName());
+                Gender = user.getGender();
+                if (Gender.equals("Male")) {
+                    jRadioButton1.setSelected(true);
+                } else {
+                    jRadioButton2.setSelected(true);
+                }
+                DateOfBirthField.setText(user.getDateOfBirth());
+            }
+        }
     }
 
     private void updateChanges(String msg, String title){
@@ -38,31 +64,12 @@ public class UserProfileUI extends BasePanel {
         }
     }
 
-    private void renderUserProfile() {
-        String Username = UserDAO.loadSessionData().get(0).getUsername();
-        
-        String Gender = "";
-        for (User users : user){
-            if (users.getUsername().equals(Username)) {
-                UsernameField.setText(users.getUsername());
-                NewPasswordField.setText(users.getPassword());
-                NewFullNameField.setText(users.getFullName());
-                Gender = users.getGender();
-                if (Gender.equals("Male")) {
-                    jRadioButton1.setSelected(true);
-                } else {
-                    jRadioButton2.setSelected(true);
-                }
-                DateOfBirthField.setText(users.getDateOfBirth());
-            }
-        }
-    }
-
 
 
 
     private void Reset(){
         updateChanges("Are you sure you want to reset?", "Reset Confirmation");
+
     }
 
     
@@ -72,8 +79,10 @@ public class UserProfileUI extends BasePanel {
     private void Savechanges(){
         String NewPassword = new String(NewPasswordField.getPassword()).trim();
         String NewFullName = NewFullNameField.getText().trim();
-        String NewGender = jRadioButton1.isSelected() ? "Male" : "Female";
-         
+        String NewGender = jRadioButton1.isSelected() ? "Male" : (jRadioButton2.isSelected() ? "Female" : "");
+         System.out.println(NewGender);
+         System.out.println(NewPassword);
+        System.out.println(NewFullName);
         
        // Validate the input values
        if ( NewFullName.isEmpty() || NewPassword.isEmpty() || GenderButtonGroup.getSelection() == null) {
@@ -99,13 +108,14 @@ public class UserProfileUI extends BasePanel {
                     users.setFullName(NewFullName);
                     users.setGender(NewGender);
                     UserDAO.modifyUser(users);
+                    break;
                 }
             }
             
             JOptionPane.showMessageDialog(null, "Update Successful!");
 
             // Reload the user profile
-            initComponents();
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Registration failed. Please try again.");
             e.printStackTrace();
